@@ -1,50 +1,12 @@
 import axios from './index'
 
 // 1. 定义基础路径
-const BASE_URL = 'http://api.7-orange.cn:7300/mock/5def6a2d448e330a1116366e/api/'
+const BASE_URL = 'https://www.fastmock.site/mock/5be73acffa04964e175aa5d4ad4354f1/easybuy/'
 
 /*****Home 模块*******/
-export const getHomeData = () => axios(BASE_URL + 'homeApi');
-// 特色专区
-export const getHomeSpecialZone = () => axios(BASE_URL + 'homeApi/specialZone');
-
-/***** 分类(Category) 模块 *******/
-// Category 列表页面数据
-export const getCategoryData = () => axios(BASE_URL + 'homeApi/categories');
-
-// Category 右边内容页面数据 需要根据左边点击传值
-export const getCategoryDetailData = (params) => axios(BASE_URL + 'homeApi/categoriesdetail' + params);
-
-/***** 吃什么 模块 *******/
-// 今日菜单的所有菜单分类
-export const getTodayMenuCategoryList = () => axios(BASE_URL + 'recipe/allScene');
-// 菜品菜单
-export const getTodayMenuDetail = (params) => axios(BASE_URL + 'recipe/menulist' + params);
-
-/***** 购物车页面 猜你喜欢*********/
-export const getGuessYouLike = () => axios(BASE_URL + 'cart/youlike');
-
-/***** 登录界面接口 *********/
-// 1.获取手机验证码(GET)
-// Easy Mock 模拟发送验证码 
-export const getPhoneCaptcha = (phoneNumber) => axios(BASE_URL + 'send_code', {
-    phoneNumber
-});
-
-// 2.手机验证码登录(POST)
-// Easy Mock 模拟用户登录
-export const phoneCaptchaLogin = (phone, captcha) => axios(BASE_URL + 'login_code', {
-    phone,
-    captcha
-}, 'POST');
-
-// 3.账号密码登录(POST)
-export const pwdLogin = (userName, pwd, captcha) => axios(BASE_URL + 'login_pwd', {
-    userName,
-    pwd,
-    captcha
-}, 'POST');
-
-/***** 个人中心 *********/
-// 1.绿卡Vip
-export const getVipContent = () => axios(BASE_URL + 'vip');
+//轮播图
+export const getBanner = () => axios(BASE_URL + 'banner');
+//广告
+export const getAdvertise = () => axios(BASE_URL + 'advertisement');
+// 首页分类按钮块
+export const getItemList = () => axios(BASE_URL + 'tabitem');
