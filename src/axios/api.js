@@ -10,3 +10,5 @@ export const getBanner = () => axios(BASE_URL + 'banner');
 export const getAdvertise = () => axios(BASE_URL + 'advertisement');
 // 首页分类按钮块
 export const getItemList = () => axios(BASE_URL + 'tabitem');
+// 限时抢购
+export const getFlashsale = () => axios(BASE_URL + 'falshsale');
