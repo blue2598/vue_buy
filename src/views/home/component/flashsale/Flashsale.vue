@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #flashsale {
   font-size: 0.16rem;
   padding: 10px 0;
@@ -83,7 +83,7 @@ export default {
   display: inline-block;
   background-color: #000;
   color: #fff;
-  width: 25px;
+  width: 0.25rem;
   text-align: center;
 }
 .more {
@@ -101,6 +101,11 @@ export default {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   transform: translateZ(0);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .shop-item {

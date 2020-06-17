@@ -11,7 +11,7 @@
     <Flashsale></Flashsale>
     <Special></Special>
     <Category></Category>
-    <van-divider>别翻啦，到底啦</van-divider>
+    <van-divider style="margin-bottom:50px">别翻啦，到底啦</van-divider>
   </div>
 </template>
 

@@ -9,6 +9,7 @@ import Personal from '../views/personal/Personal'
 import Shopcart from '../views/shopcart/Shopcart.vue'
 import Eat from '../views/recommend/Eat'
 
+import GoodDetails from '../components/GoodDetails.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -53,6 +54,10 @@ const router = new Router({
             name: 'personal',
             component: Personal,
         }]
+    },{
+        path:'/goodDetails',
+        name:'GoodDetails',
+        component:GoodDetails
     }]
 })
 export default router
