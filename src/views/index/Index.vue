@@ -17,18 +17,6 @@ export default {
   data() {
     return {
       active: 0,
-      created() {
-        this.tabbarSelected(this.$route.name);
-        console.log(this.$route)
-      },
-      watch: {
-        $route: {
-          handler(newV, oldV) {
-            this.tabbarSelected(newV.name);
-          }
-        },
-        deep:true
-      },
       tabbars: [
         {
           router: "home",
@@ -62,6 +50,17 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    this.tabbarSelected(this.$route.name);
+  },
+  watch: {
+    $route: {
+      handler(newV, oldV) {
+        this.tabbarSelected(newV.name);
+      }
+    },
+    deep: true
   },
   methods: {
     tabbarSelected(name) {
