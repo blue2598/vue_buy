@@ -1,6 +1,6 @@
 <template>
   <div id="category">
-    <van-tabs v-model="active" color="#45c763" :swipeable="true" title-active-color="#45c763">
+    <van-tabs v-model="active" animated color="#45c763" :swipeable="true" title-active-color="#45c763">
       <van-tab title="全部">
         <ProductItem :product_lists="all_lists"></ProductItem>
       </van-tab>

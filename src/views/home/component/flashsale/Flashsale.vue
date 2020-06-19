@@ -92,25 +92,25 @@ export default {
   font-size: 0.16rem;
   font-weight: 500;
 }
-.shop-swiper {
-  /* width: 12rem; */
+.content_wrapper{
+  width: 100vw;
   overflow: hidden;
-  overflow-x:hidden ;
+  overflow-x: scroll;
+}
+.content_wrapper::-webkit-scrollbar{
+  display: none;
+}
+.shop-swiper {
+  width: 250vw;
   height: 2rem;
   margin: 0 auto;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  transform: translateZ(0);
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
 }
 
 .shop-item {
   display: inline-block;
-  width: 1.05rem;
+  width: 1rem;
   padding: 10px;
   vertical-align: top;
 }

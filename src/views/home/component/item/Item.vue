@@ -1,7 +1,7 @@
 <template>
   <div id="item">
     <div class="item_wrapper">
-      <div class="items" v-for="(item,index) in itemlist" :key="index">
+      <div class="items" v-for="(item,index) in itemlist" :key="index" @click="goAllCategory(item.id)">
         <div>
           <img :src="item.icon_url" />
         </div>
@@ -16,6 +16,7 @@ import { getItemList } from "../../../../axios/api";
 export default {
   data() {
     return {
+      active: 1,
       itemlist: []
     };
   },
@@ -28,6 +29,9 @@ export default {
       if (response.message == "success") {
         this.itemlist = response.data.navlist;
       }
+    },
+    goAllCategory(val){
+      this.$router.push({name:'category',params:{'id':val}})
     }
   }
 };

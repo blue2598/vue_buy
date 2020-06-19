@@ -19,3 +19,5 @@ export const getAll_lists = () => axios(BASE_URL + 'productlist');// 全部
 export const getDinner_lists = () => axios(BASE_URL + 'productlist?type=1');//晚餐
 export const getHot_lists = () => axios(BASE_URL + 'productlist?type=2');//人气
 export const getSelect_lists = () => axios(BASE_URL + 'productlist?type=3');//心选
+//分类
+export const getCatelists = () => axios(BASE_URL + 'category');

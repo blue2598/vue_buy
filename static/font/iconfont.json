@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1440886",
+      "name": "返回顶部 ",
+      "font_class": "fanhuidingbu",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "3851247",
+      "name": "返回顶部-64px",
+      "font_class": "fanhuidingbu-px",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "3882826",
+      "name": "火箭",
+      "font_class": "huojian",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "10229548",
+      "name": "返回顶部",
+      "font_class": "fanhuidingbu1",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "11038548",
+      "name": "首页返回顶部",
+      "font_class": "shouyefanhuidingbu",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
       "icon_id": "566774",
       "name": "左箭头",
       "font_class": "zuojiantou",

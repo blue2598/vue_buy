@@ -1,6 +1,6 @@
 <template>
   <div id="gooddetail">
-    <div class="top-header">
+    <div class="top-header" :offset-top='0'>
       <span class="goback" @click="goback()">
         <i class="iconfont icon-zuojiantou"></i>
       </span>
@@ -77,9 +77,11 @@ export default {
 .top-header {
   position: fixed;
   top: 0;
-  width: 100%;
+  left:0;
+  width: 100vw;
   background-color: #fff;
   height: 0.5rem;
+  line-height: 0.5rem;
   z-index: 10;
 }
 .top-header p {
