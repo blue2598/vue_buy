@@ -3,9 +3,15 @@
     <div class="title_wrapper">
       <div>
         <span>限时抢购</span>
-        <span class="time">1</span>:
-        <span class="time">42</span>:
-        <span class="time">53</span>
+        <van-count-down :time="time">
+          <template v-slot="timeData">
+            <span class="time">{{ timeData.hours|timeFormat}}</span>
+            <span class="colon">:</span>
+            <span class="time">{{ timeData.minutes|timeFormat }}</span>
+            <span class="colon">:</span>
+            <span class="time">{{ timeData.seconds|timeFormat }}</span>
+          </template>
+        </van-count-down>
         <span class="more">更多</span>
       </div>
     </div>
@@ -34,12 +40,17 @@ import { getFlashsale } from "../../../../axios/api";
 export default {
   data() {
     return {
-      shoplist: []
+      shoplist: [],
+      time: 2 * 60 * 60 * 1000,
+      timeH: 2,
+      timeM: 0,
+      timeS: 0
     };
   },
   created() {
     this.getFlashsale();
   },
+  watched: {},
   methods: {
     async getFlashsale() {
       const response = await getFlashsale();
@@ -48,10 +59,14 @@ export default {
       }
     }
   },
-  filters:{
-      priceFormat(value){
-          return '￥'+value
-      }
+  filters: {
+    priceFormat(value) {
+      return "￥" + value;
+    },
+    timeFormat(value) {
+      if (value < 9) return "0" + value;
+      else return value;
+    }
   }
 };
 </script>
@@ -86,18 +101,21 @@ export default {
   width: 0.25rem;
   text-align: center;
 }
+.van-count-down{
+  display: inline-block;
+}
 .more {
   float: right;
   color: #45c763;
   font-size: 0.16rem;
   font-weight: 500;
 }
-.content_wrapper{
+.content_wrapper {
   width: 100vw;
   overflow: hidden;
   overflow-x: scroll;
 }
-.content_wrapper::-webkit-scrollbar{
+.content_wrapper::-webkit-scrollbar {
   display: none;
 }
 .shop-swiper {
@@ -118,39 +136,39 @@ export default {
   width: 1rem;
   height: 1rem;
 }
-.product_name{
-    color: #666;
-    font-size: 0.14rem;
+.product_name {
+  color: #666;
+  font-size: 0.14rem;
 }
-.product_price{
-    padding: 10px 0;
-    position: relative;
+.product_price {
+  padding: 10px 0;
+  position: relative;
 }
-.now_price{
-    display: block;
-    color: rgb(226, 31, 31);
-    font-size: 0.18rem;
+.now_price {
+  display: block;
+  color: rgb(226, 31, 31);
+  font-size: 0.18rem;
 }
-.old_price{
-    color: #999;
-    font-size: 0.14rem;
-    text-decoration: line-through;
+.old_price {
+  color: #999;
+  font-size: 0.14rem;
+  text-decoration: line-through;
 }
-.shopcart{
-    position: absolute;
-    top:0;
-    bottom: 0;
-    right: 0.1rem;
-    margin: auto;
-    height: 0.3rem;
-    line-height: 0.3rem;
-    width: 0.3rem;
-    background-color: #45c763;
-    color: #fff;
-    text-align: center;
-    border-radius: 50%;
+.shopcart {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0.1rem;
+  margin: auto;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  width: 0.3rem;
+  background-color: #45c763;
+  color: #fff;
+  text-align: center;
+  border-radius: 50%;
 }
-.shopcart i{
-    font-size: 0.18rem;
+.shopcart i {
+  font-size: 0.18rem;
 }
 </style>

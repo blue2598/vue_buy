@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Index from '../views/index/Index.vue'
 
 import Home from '../views/home/Home.vue'
+import Map from '../views/home/component/map/Map'
 import Category from '../views/category/Category'
 import Personal from '../views/personal/Personal'
 import Shopcart from '../views/shopcart/Shopcart.vue'
@@ -53,6 +54,10 @@ const router = new Router({
             path: 'personal',
             name: 'personal',
             component: Personal,
+        },{
+            path:'map',
+            name:'map',
+            component: Map,
         }]
     },{
         path:'/goodDetails',

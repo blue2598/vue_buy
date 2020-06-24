@@ -1,6 +1,6 @@
 <template>
   <div id="gooddetail">
-    <div class="top-header" :offset-top='0'>
+    <div class="top-header">
       <span class="goback" @click="goback()">
         <i class="iconfont icon-zuojiantou"></i>
       </span>

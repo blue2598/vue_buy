@@ -6,12 +6,15 @@ import router from './router'
 import Vant from 'vant'
 import store from './store'
 
+import { Toast } from 'vant';
+
 import './js/rem.js'
 
 import 'vant/lib/index.css'
 import '../static/css/normal.css'
 import '../static/font/iconfont.css'
 Vue.use(Vant)
+Vue.use(Toast)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

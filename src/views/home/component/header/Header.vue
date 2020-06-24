@@ -1,7 +1,7 @@
 <template>
   <div id="header">
       <div class="position_wrapper">
-          <div class="position_box">
+          <div class="position_box" @click="GoMap()">
               <i class="iconfont icon-dingwei"></i>
               <span>请选择收货地址</span>
               <i class="iconfont icon-jiantouxia"></i>
@@ -18,7 +18,11 @@
 
 <script>
 export default {
-
+    methods:{
+        GoMap(){
+            this.$router.push({name:"map"})
+        }
+    }
 }
 </script>
 
