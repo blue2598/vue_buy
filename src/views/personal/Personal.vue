@@ -1,0 +1,135 @@
+<template>
+  <div id="mime">
+    <div class="m-header">
+      <div class="top">我的</div>
+      <img src="../../assets/images/mine/icon-test.png" width="90" height="90" />
+      <div class="text" v-if="isLogin">{{用户名}}</div>
+      <div class="text" v-else @click="loginFn()">立即登录</div>
+    </div>
+    <div class="m-con">
+      <van-cell-group>
+        <van-cell title="我的订单" is-link to="index" value="查看全部订单"  icon='label'/>
+        <van-cell class="op-cell">
+            <ul class="op-list">
+                <li>
+                    <van-icon name="paid" badge="0" />
+                    <span class="">待支付</span>
+                </li>
+                <li>
+                    <van-icon name="gift-o" badge="9" />
+                    <span class="">待收货</span>
+                </li>
+                <li>
+                    <van-icon name="smile-comment-o" badge="9" />
+                    <span class="">待评价</span>
+                </li>
+                <li>
+                    <van-icon name="after-sale" badge="9" />
+                    <span class="">售后/退款</span>
+                </li>
+            </ul>
+        </van-cell>
+      </van-cell-group>
+      <van-cell-group>
+        <van-cell title="我的优惠券" is-link to="index"  icon='bill'/>
+        <van-cell title="我的收货地址" is-link to="index"  icon='setting'/>
+      </van-cell-group>
+      
+      <van-cell-group>
+        <van-cell title="我的绿卡" is-link to="index"  icon='vip-card'/>
+      </van-cell-group>
+      <van-cell-group>
+        <van-cell title="联系客服" is-link to="index" value="客服时间07:00-22:00" icon='phone-circle'/>
+        <van-cell title="意见反馈" is-link to="index"  icon='comment-circle'/>
+      </van-cell-group>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      isLogin: false
+    };
+  },
+  methods: {
+    loginFn() {
+        this.$router.push('/login')
+    }
+  }
+};
+</script>
+<style scoped>
+.m-header {
+  padding: 10px 0;
+  background-color: #3bba63;
+}
+.m-header img {
+  border-radius: 50%;
+  margin-left: 15px;
+  vertical-align: middle;
+}
+.top {
+  color: #fff;
+  font-size: 0.16rem;
+  text-align: center;
+  /* margin-bottom: 20px; */
+}
+.text {
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 0.15rem;
+}
+.op-cell{
+    padding: 10px 0;
+}
+.op-list{
+    width: 100%;
+    height: 70px;
+}
+.op-list li{
+    padding: 10px 0;
+    width: 25%;
+    float: left;
+    text-align: center;
+    color: #7d7e80;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+.op-list li i{
+    font-size: 0.25rem;
+}
+.m-con{
+    background-color: #f5f5f5;
+}
+.van-icon.van-icon-label{
+    color: #3bba63;
+    font-size: 0.2rem;
+}
+.van-icon.van-icon-bill{
+    color: #3bba63;
+    font-size: 0.2rem;
+}
+.van-icon.van-icon-setting{
+    color: #3bba63;
+    font-size: 0.2rem;
+}
+.van-icon.van-icon-phone-circle{
+    color: #3bba63;
+    font-size: 0.2rem;
+}
+.van-icon.van-icon-vip-card{
+    color: #3bba63;
+    font-size: 0.2rem;
+}
+.van-icon.van-icon-comment-circle{
+    color: #3bba63;
+    font-size: 0.2rem;
+}
+.van-cell-group{
+    margin-bottom: 10px;
+}
+</style>

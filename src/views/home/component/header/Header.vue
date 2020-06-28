@@ -3,7 +3,7 @@
       <div class="position_wrapper">
           <div class="position_box" @click="GoMap()">
               <i class="iconfont icon-dingwei"></i>
-              <span>请选择收货地址</span>
+              <span>请选择位置</span>
               <i class="iconfont icon-jiantouxia"></i>
           </div>
       </div>
@@ -36,7 +36,7 @@ export default {
     z-index: 99;
 }
 .position_wrapper{
-    width: 45%;
+    width: 35%;
     display: inline-block;
 }
 .position_box{
@@ -51,7 +51,7 @@ export default {
     border-radius: 0.2rem;
 }
 .search_wrapper{
-    width: 53%;
+    width: 63%;
     display: inline-block;
 }
 .search_box{

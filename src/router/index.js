@@ -11,6 +11,7 @@ import Shopcart from '../views/shopcart/Shopcart.vue'
 import Eat from '../views/recommend/Eat'
 
 import GoodDetails from '../components/GoodDetails.vue'
+import Login from '../components/Login.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -63,6 +64,10 @@ const router = new Router({
         path:'/goodDetails',
         name:'GoodDetails',
         component:GoodDetails
+    },{
+        path:'/Login',
+        name:'login',
+        component:Login
     }]
 })
 export default router
