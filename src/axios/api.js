@@ -21,3 +21,6 @@ export const getHot_lists = () => axios(BASE_URL + 'productlist?type=2');//人�
 export const getSelect_lists = () => axios(BASE_URL + 'productlist?type=3');//心选
 //分类
 export const getCatelists = () => axios(BASE_URL + 'category');
+
+// 登录
+export const getVerifyCode = () => axios(BASE_URL + 'verifycode');

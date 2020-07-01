@@ -1,10 +1,17 @@
 <template>
   <div id="mime">
-    <div class="m-header">
+    <div class="m-header" v-if="!isLogin">
       <div class="top">我的</div>
       <img src="../../assets/images/mine/icon-test.png" width="90" height="90" />
-      <div class="text" v-if="isLogin">{{用户名}}</div>
-      <div class="text" v-else @click="loginFn()">立即登录</div>
+      <div class="text" @click="loginFn()">立即登录</div>
+    </div>
+    <div class="m-header" v-else>
+      <div class="top">我的</div>
+      <img src="../../assets/images/mine/icon-test.png" width="90" height="90" />
+      <div class="text">
+        <div class="username">young</div>
+        <div class="phone">手机号：15215607604</div>
+      </div>
     </div>
     <div class="m-con">
       <van-cell-group>
@@ -80,6 +87,9 @@ export default {
   vertical-align: middle;
   color: #fff;
   font-size: 0.15rem;
+}
+.text div{
+  padding: 5px 0;
 }
 .op-cell{
     padding: 10px 0;

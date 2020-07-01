@@ -7,7 +7,7 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const state = {
-
+    isLogin: false,
 }
 export default new Vuex.Store({
     state,
