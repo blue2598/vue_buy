@@ -1,5 +1,5 @@
 <template>
-  <div id="header">
+  <div id="header" :class='this.scrollTop>100?"bg1":""'>
       <div class="position_wrapper">
           <div class="position_box" @click="GoMap()">
               <i class="iconfont icon-dingwei"></i>
@@ -18,9 +18,20 @@
 
 <script>
 export default {
+    data(){
+        return {
+            scrollTop:0,
+        }
+    },
+    mounted(){
+        window.addEventListener('scroll', this.getScrollTop);
+    },
     methods:{
         GoMap(){
             this.$router.push({name:"map"})
+        },
+         getScrollTop(){
+            this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
         }
     }
 }
@@ -34,6 +45,12 @@ export default {
     top:0;
     width: 100%;
     z-index: 99;
+}
+.bg1{
+    background-color: #fff;
+}
+.bg1 .search_wrapper .search_box{
+    background-color: #f5f5f5;
 }
 .position_wrapper{
     width: 35%;

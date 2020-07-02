@@ -24,3 +24,12 @@ export const getCatelists = () => axios(BASE_URL + 'category');
 
 // 登录
 export const getVerifyCode = () => axios(BASE_URL + 'verifycode');
+//获取用户名
+export const getUserinfo = (phone) => axios(BASE_URL + 'userinfo',{
+    phone
+},'POST');
+
+//推荐菜
+//推荐菜类别
+export const getRconmmendType = () => axios(BASE_URL + 'recommendtype');
+export const getRconmmendDefault = (id) => axios(BASE_URL + 'recommend?id='+id);

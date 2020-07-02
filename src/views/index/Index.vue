@@ -78,6 +78,9 @@ export default {
 </script>
 
 <style>
+.tabbars{
+  z-index: 999;
+}
 .icon-item {
   width: 25px;
   height: 25px !important;

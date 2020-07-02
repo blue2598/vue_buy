@@ -8,6 +8,7 @@ Vue.use(Vuex)
 
 const state = {
     isLogin: false,
+    userinfo:{},
 }
 export default new Vuex.Store({
     state,

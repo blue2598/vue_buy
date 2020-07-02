@@ -147,7 +147,7 @@ export default {
 .now_price {
   display: block;
   color: rgb(226, 31, 31);
-  font-size: 0.18rem;
+  font-size: 0.16rem;
 }
 .old_price {
   color: #999;
@@ -160,15 +160,15 @@ export default {
   bottom: 0;
   right: 0.1rem;
   margin: auto;
-  height: 0.3rem;
-  line-height: 0.3rem;
-  width: 0.3rem;
+  height: 0.25rem;
+  line-height: 0.25rem;
+  width: 0.25rem;
   background-color: #45c763;
   color: #fff;
   text-align: center;
   border-radius: 50%;
 }
 .shopcart i {
-  font-size: 0.18rem;
+  font-size: 0.16rem;
 }
 </style>

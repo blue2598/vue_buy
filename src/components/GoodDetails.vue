@@ -44,6 +44,11 @@
           <img :src="goodDetails.small_image" />
           <img src="https://img.ddimg.mobi/3f280ff77ab3d1571213379189.jpg?width=750&height=1869" />
         </div>
+        <van-goods-action>
+          <van-goods-action-icon icon="cart-o" text="购物车" badge="5" />
+          <van-goods-action-button type="warning" text="加入购物车" />
+          <van-goods-action-button type="danger" text="立即购买" />
+        </van-goods-action>
       </div>
     </div>
   </div>
@@ -71,13 +76,17 @@ export default {
 </script>
 
 <style scoped>
-#gooddetail{
-    background-color: #f5f5f5;
+#gooddetail {
+  background-color: #f5f5f5;
+  overflow-x: hidden;
+}
+#gooddetail::-webkit-scrollbar{
+  display: none;
 }
 .top-header {
   position: fixed;
   top: 0;
-  left:0;
+  left: 0;
   width: 100vw;
   background-color: #fff;
   height: 0.5rem;
@@ -104,8 +113,8 @@ export default {
   line-height: 0.2rem;
   font-size: 0.16rem;
 }
-.details{
-    background-color: #fff;
+.details {
+  background-color: #fff;
 }
 .good-img {
   padding-top: 0.5rem;
@@ -168,8 +177,8 @@ export default {
   font-size: 0.22rem;
   vertical-align: middle;
 }
-.good-specifications{
-    margin-bottom: 0.1rem;
+.good-specifications {
+  margin-bottom: 0.1rem;
   padding-left: 0.1rem;
 }
 .guige {
@@ -178,17 +187,17 @@ export default {
   color: #000;
 }
 .good-specifications .item {
-  padding:0 10px;
+  padding: 0 10px;
   font-size: 0.13rem;
   color: #808080;
 }
 .good-specifications .item span {
   margin-right: 0.15rem;
 }
-.show{
-    text-align: center;
+.show {
+  text-align: center;
 }
-.show img{
-    width: 99%;
+.show img {
+  width: 99%;
 }
 </style>

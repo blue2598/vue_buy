@@ -7,6 +7,7 @@ import Home from '../views/home/Home.vue'
 import Map from '../views/home/component/map/Map'
 import Category from '../views/category/Category'
 import Personal from '../views/personal/Personal'
+import Userinfo from '../views/personal/Userinfo'
 import Shopcart from '../views/shopcart/Shopcart.vue'
 import Eat from '../views/recommend/Eat'
 
@@ -55,6 +56,10 @@ const router = new Router({
             path: 'personal',
             name: 'personal',
             component: Personal,
+        },{
+            path:'userinfo',
+            name:'userinfo',
+            component:Userinfo,
         },{
             path:'map',
             name:'map',

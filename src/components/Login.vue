@@ -1,7 +1,7 @@
 <template>
   <div class="login-box">
     <div class="login-wrapper">
-      <img class="bear" src="../assets/images/login/normal.png" />
+      <img class="bear" :src="bearSrc" />
       <span class="close">
         <van-icon name="close" @click="closeFn()" />
       </span>
@@ -16,6 +16,7 @@
                 name="手机号码"
                 label="手机号码"
                 placeholder="手机号码"
+                @click="changeBear(1)"
               />
               <van-field
                 v-model="Vcode"
@@ -24,6 +25,7 @@
                 name="验证码"
                 label="验证码"
                 placeholder="验证码"
+                @click="changeBear(0)"
               >
                 <van-button
                   slot="button"
@@ -56,6 +58,7 @@
                 name="手机号码"
                 label="手机号码"
                 placeholder="手机号码"
+                @click="changeBear(1)"
               />
               <van-field
                 v-model="password"
@@ -64,6 +67,7 @@
                 name="密码"
                 label="密码"
                 placeholder="密码"
+                @click="changeBear(2)"
               ></van-field>
               <div style="margin: 16px;">
                 <van-button block type="info" native-type="submit">登录</van-button>
@@ -73,8 +77,22 @@
           </van-tab>
           <van-tab title="注册">
             <van-form @submit="registerFn">
-              <van-field v-model="phonenum" name="手机号码" label="手机号码" placeholder="手机号码" />
-              <van-field v-model="password" type="password" name="密码" label="密码" placeholder="密码" />
+              <van-field
+                v-model="phonenum"
+                name="手机号码"
+                @click="changeBear(1)"
+                label="手机号码"
+                placeholder="手机号码"
+              />
+              <van-field
+                v-model="regPassword"
+                @focus="closeEye()"
+                type="password"
+                name="密码"
+                label="密码"
+                placeholder="密码"
+                @click="changeBear(2)"
+              />
               <div style="margin: 16px;">
                 <van-button block type="info" native-type="submit">注册</van-button>
               </div>
@@ -94,14 +112,14 @@
             </li>
           </ul>
         </div>
-        <van-field name="checkbox" label="">
-        <template #input>
-          <van-checkbox class="agree" v-model="agree" name="1" shape="square">
-            同意
-            <b style="color:blue">用户协议</b>、
-            <b style="color:blue">隐私策略</b>
-          </van-checkbox>
-        </template>
+        <van-field name="checkbox" label>
+          <template #input>
+            <van-checkbox class="agree" v-model="agree" name="1" shape="square">
+              同意
+              <b style="color:blue">用户协议</b>、
+              <b style="color:blue">隐私策略</b>
+            </van-checkbox>
+          </template>
         </van-field>
       </div>
     </div>
@@ -110,7 +128,8 @@
 <script>
 import { Toast } from "vant";
 import { Dialog } from "vant";
-import { getVerifyCode } from "../axios/api";
+import { getVerifyCode,getUserinfo } from "../axios/api";
+import {mapState,mapMutations,mapActions} from 'vuex'
 export default {
   data() {
     return {
@@ -119,14 +138,20 @@ export default {
       phonenum: "",
       password: "",
       username: "",
+      regPassword: "",
       verifyCode: "", //验证码
       Vcode: "",
-      agree:false,
+      agree: false,
       loginType: 0, //0是验证码登录，1是密码登录
       showPanel: true, //切换验证码登录和密码登录
       verifyButton: true, //发送验证码按钮禁用状态
-      bearSrc: "../assets/images/login/normal.png"
+      bearSrc: require("@/assets/images/login/normal.png")
     };
+  },
+  computed:{
+    ...mapState({
+      userinfo:state=>state.userinfo
+    })
   },
   components: {
     [Dialog.Component.name]: Dialog.Component
@@ -159,7 +184,7 @@ export default {
       return this.verifyCode == this.Vcode;
     },
     //登录
-    loginFn() {
+   async loginFn() {
       if (this.loginType) {
         //账号密码登录
         if (!this.checkPhoneNum()) {
@@ -180,7 +205,14 @@ export default {
           Toast("验证码不正确");
           return;
         }
-        if (this.checkPhoneNum() && this.checkVerifyCode()) {
+        if (!this.agree) {
+          Toast({'message':"请勾选同意用户协议、隐私策略",'position':'center'});
+          return;
+        }
+        if (this.checkPhoneNum() && this.checkVerifyCode()&&this.agree) {
+          this.$store.state.isLogin = true;
+          let ref = await getUserinfo(this.phonenum);
+          this.$store.dispatch("curUserinfo", ref.data.userInfo);
           this.$router.back();
         }
       }
@@ -191,10 +223,20 @@ export default {
       this.typeText = this.showPanel ? "账号密码登录" : "手机验证码登录";
       this.loginType = this.showPanel ? 0 : 1;
     },
+    //小熊
+    changeBear(index) {
+      switch(index){
+        case 0 :this.bearSrc = require("@/assets/images/login/normal.png");break;
+        case 1 :this.bearSrc = require("@/assets/images/login/greeting.png");break;
+        case 2 :this.bearSrc = require("@/assets/images/login/blindfold.png");break;
+        default : this.bearSrc = require("@/assets/images/login/normal.png")
+      }
+    },
+    openEye() {
+      this.bearSrc = require("@/assets/images/login/greeting.png");
+    },
     //注册
-    registerFn() {
-      
-    }
+    registerFn() {}
   }
 };
 </script>
