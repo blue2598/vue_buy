@@ -1,5 +1,5 @@
 <template>
-  <div id="gooddetail">
+  <div id="userinfo">
     <div class="top-header">
       <span class="goback" @click="goback()">
         <i class="iconfont icon-zuojiantou"></i>
@@ -75,8 +75,7 @@ export default {
       sex: "1",
       username:'',
       phone:'',
-      goodDetails: this.$route.params,
-      userinfo: this.$route.query.list
+      userinfo: this.$route.params.list
     };
   },
   created() {},
@@ -101,8 +100,13 @@ export default {
 </script>
 
 <style scoped>
-#gooddetail {
+#userinfo {
   background-color: #f5f5f5;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
 }
 .top-header {
   position: fixed;

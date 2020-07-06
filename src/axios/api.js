@@ -33,3 +33,6 @@ export const getUserinfo = (phone) => axios(BASE_URL + 'userinfo',{
 //推荐菜类别
 export const getRconmmendType = () => axios(BASE_URL + 'recommendtype');
 export const getRconmmendDefault = (id) => axios(BASE_URL + 'recommend?id='+id);
+// 推荐菜细分
+export const getRecommendTypeType = () => axios(BASE_URL + 'recommendtype');
+export const getRecommendList = () => axios(BASE_URL + 'recommendtype');

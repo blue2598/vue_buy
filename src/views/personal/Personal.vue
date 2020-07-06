@@ -1,5 +1,5 @@
 <template>
-  <div id="mime">
+  <div id="mine">
     <div class="m-header" v-if="!isLogin">
       <div class="top">我的</div>
       <img src="../../assets/images/mine/icon-test.png" width="90" height="90" />
@@ -16,18 +16,18 @@
     </div>
     <div class="m-con">
       <van-cell-group>
-        <van-cell title="我的订单" is-link to="index" value="查看全部订单" icon="label" />
+        <van-cell title="我的订单" is-link @click="goChildren('order')" value="查看全部订单" icon="label" />
         <van-cell class="op-cell">
           <ul class="op-list">
-            <li>
+            <li @click="goOrder(1)">
               <van-icon name="paid" badge="0" />
               <span class>待支付</span>
             </li>
-            <li>
+            <li @click="goOrder(2)">
               <van-icon name="gift-o" badge="9" />
               <span class>待收货</span>
             </li>
-            <li>
+            <li @click="goOrder(3)">
               <van-icon name="smile-comment-o" badge="9" />
               <span class>待评价</span>
             </li>
@@ -39,17 +39,18 @@
         </van-cell>
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="我的优惠券" is-link to="index" icon="bill" />
-        <van-cell title="我的收货地址" is-link to="index" icon="setting" />
+        <van-cell title="我的优惠券" is-link @click="goChildren('coupon')" icon="bill" />
+        <van-cell title="我的收货地址" is-link @click="goChildren('deliveryaddress')" icon="setting" />
       </van-cell-group>
 
       <van-cell-group>
-        <van-cell title="我的绿卡" is-link to="index" icon="vip-card" />
+        <van-cell title="我的绿卡" is-link @click="goChildren('myvip')" icon="vip-card" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="联系客服" is-link to="index" value="客服时间07:00-22:00" icon="phone-circle" />
-        <van-cell title="意见反馈" is-link to="index" icon="comment-circle" />
+        <van-cell title="联系客服" is-link @click="goChildren('myvip')" value="客服时间07:00-22:00" icon="phone-circle" />
+        <van-cell title="意见反馈" is-link @click="goChildren('feedback')" icon="comment-circle" />
       </van-cell-group>
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -64,7 +65,14 @@ export default {
       this.$router.push("/login");
     },
     userinfoDetails(list) {
-      this.$router.push({ name: "userinfo", query: { list } });
+      this.$router.push({name: "userinfo", params: { list }});
+    },
+    goChildren(name){
+      console.log(name)
+      this.$router.push({name})
+    },
+    goOrder(index){
+      this.$router.push({name:"order",params:{index:index}})
     }
   },
   computed: {

@@ -20,7 +20,8 @@
         </ul>
       </div>
       <div class="right-wrapper">
-
+        <Listitem></Listitem>
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -28,6 +29,7 @@
 
 <script>
 import { getCatelists } from "../../axios/api";
+import Listitem from './categoryCom/Listitem'
 export default {
   data() {
     return {
@@ -38,6 +40,9 @@ export default {
     };
   },
   mouted() {
+  },
+  components:{
+    Listitem
   },
   created() {
     this.getCate();
@@ -142,8 +147,10 @@ export default {
   color: #666;
 }
 .right-wrapper {
-  width: 70%;
+  width: 73%;
   height: 100%;
   float: left;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 </style>
