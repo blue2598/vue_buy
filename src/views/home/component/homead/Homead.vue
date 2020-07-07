@@ -24,7 +24,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #adver {
     width: 100%;
     height: 1.2rem;

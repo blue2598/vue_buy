@@ -14,7 +14,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .vip_box{
     background-color: #3bba63;
     width: 91%;

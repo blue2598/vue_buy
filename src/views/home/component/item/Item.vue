@@ -37,7 +37,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#item{
+  font-size: 0;
+  width: 100vw;
+}
 .item_wrapper {
   background-color: #fff;
   font-size: 0.16rem;

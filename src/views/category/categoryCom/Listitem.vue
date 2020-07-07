@@ -8,14 +8,16 @@
       <div class="title">{{nowtitle}}</div>
       <div class="goodsitem">
         <ul>
-          <li>
-            <div class="imgbox"></div>
+          <li v-for="(item,index) in goodlists" :key="index">
+            <div class="imgbox">
+              <img :src="item.small_image" />
+            </div>
             <div class="contentbox">
-              <div class="name">内酯豆腐</div>
-              <div class="desc">内酯豆腐99998009898--- 89-</div>
+              <div class="name">{{item.product_name}}</div>
+              <div class="desc">{{item.spec}}</div>
               <div class="price">
-                <span class="now_price">{{89 | priceFormat}}</span>
-                <span class="old_price">{{24 | priceFormat}}</span>
+                <span class="now_price">{{item.price | priceFormat}}</span>
+                <span class="old_price">{{item.origin_price | priceFormat}}</span>
                 <span class="shopcart">
                   <i class="iconfont icon-gouwuche" />
                 </span>
@@ -28,27 +30,32 @@
   </div>
 </template>
 <script>
-
-import { getRecommendList, getRecommendTypeType} from "../../../axios/api";
+import { getListdetails, getRecommendTypeType } from "../../../axios/api";
+import { Toast } from "vant";
 export default {
   data() {
     return {
       active: 0,
       actived: "actived",
       nowtitle: "猜你喜欢",
-      typelists:[],
-      goodlists:[]
+      typelists: [],
+      goodlists: []
     };
+  },
+  created() {
+    this.getRecommend();
   },
   methods: {
     async getRecommend() {
-      const res1 = await getRecommendTypeType();
-      if (res1.message == "success") {
-        this.typelists = res1.data.cate;
-      }
-      const res2 = await getRecommendList();
+      var type = "cate00";
+     const t1= Toast.loading({
+        message: "加载中...",
+        forbidClick: true,
+      });
+      const res2 = await getListdetails(type);
       if (res2.message == "success") {
-        this.goodlists = res2.data.cate;
+        t1.clear();
+        this.goodlists = res2.data.goodlist.list;
       }
     }
   },
@@ -103,15 +110,17 @@ export default {
   border-bottom: 1px solid #ccc;
 }
 .goodsitem .imgbox {
-  width: 18%;
+  width: 26%;
   height: 100%;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
+}
+.goodsitem .imgbox img {
+  width: 100%;
 }
 .goodsitem .contentbox {
-  width: 82%;
+  width: 74%;
   display: inline-block;
-  vertical-align: middle;
 }
 .goodsitem .contentbox .name {
   font-size: 0.16rem;

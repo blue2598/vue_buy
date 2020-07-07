@@ -18,6 +18,7 @@ export default function ajax(url = '', params = {}, type = 'GET') {
               注意：为了防止请求缓存，在尾部加了时间戳
             */
             if (paramsStr) {
+                paramsStr = paramsStr.substr(0, paramsStr.lastIndexOf('&'));
                 url += '?' + paramsStr;
             }
             // 2.6 发起get请求

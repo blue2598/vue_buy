@@ -37,9 +37,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 #header{
-    font-size: 0.14rem;
+    font-size: 0;
     padding: 0.1rem 0;
     position: fixed;
     top:0;
@@ -53,7 +54,8 @@ export default {
     background-color: #f5f5f5;
 }
 .position_wrapper{
-    width: 35%;
+    width: 34%;
+    margin-left: 1%;
     display: inline-block;
 }
 .position_box{
@@ -66,10 +68,13 @@ export default {
     font-size: 0.16rem;
     width: 98%;
     border-radius: 0.2rem;
+    font-size: 0.16rem;
 }
 .search_wrapper{
     width: 63%;
+    margin-left: 2%;
     display: inline-block;
+    
 }
 .search_box{
     width: 98%;
@@ -80,10 +85,12 @@ export default {
     position: relative;
     border-radius: 0.2rem;
     text-align: center;
+    font-size: 0.16rem;
 }
 .search_box  i{
     position: absolute;
     left:0.2rem;
+    font-size: 0.16rem;
 }
 .search_box input{
     border:none;

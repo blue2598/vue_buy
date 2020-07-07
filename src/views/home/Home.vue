@@ -44,7 +44,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .head{
     background-image: url('http://518taole.7-orange.cn/backImage.png');
 }

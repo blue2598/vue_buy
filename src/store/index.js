@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const state = {
     isLogin: false,
     userinfo:{},
+    shopcartlist:{},
 }
 export default new Vuex.Store({
     state,

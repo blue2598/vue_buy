@@ -71,7 +71,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .list_wrapper .label {
   width: 100%;
   height: 0.5rem;

@@ -16,5 +16,12 @@ export default {
 </script>
 
 <style>
-
+body{
+  /* overflow-y: scroll; */
+  /* overflow: hidden; */
+  /* overflow-x: hidden; */
+}
+body::-webkit-scrollbar{
+  display: none;
+}
 </style>

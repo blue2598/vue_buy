@@ -49,7 +49,7 @@ export default {
 
 <style scoped>
 #special {
-  font-size: 0.16rem;
+  font-size: 0;
 }
 .title_wrapper {
   padding: 10px 0 10px 15px;
