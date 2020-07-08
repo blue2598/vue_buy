@@ -8,7 +8,7 @@
       <div class="title">{{nowtitle}}</div>
       <div class="goodsitem">
         <ul>
-          <li v-for="(item,index) in goodlists" :key="index">
+          <li v-for="(item,index) in goodlists" :key="index" @click="Details(item)">
             <div class="imgbox">
               <img :src="item.small_image" />
             </div>
@@ -18,7 +18,7 @@
               <div class="price">
                 <span class="now_price">{{item.price | priceFormat}}</span>
                 <span class="old_price">{{item.origin_price | priceFormat}}</span>
-                <span class="shopcart">
+                <span class="shopcart" @click.stop="addCart(item)">
                   <i class="iconfont icon-gouwuche" />
                 </span>
               </div>
@@ -31,6 +31,7 @@
 </template>
 <script>
 import { getListdetails, getRecommendTypeType } from "../../../axios/api";
+import {mapAction,mapState,mapMutation} from 'vuex'
 import { Toast } from "vant";
 export default {
   data() {
@@ -57,7 +58,24 @@ export default {
         t1.clear();
         this.goodlists = res2.data.goodlist.list;
       }
-    }
+    },
+    Details(item) {
+      this.$router.push({
+        name: "GoodDetails",
+        params: {
+          id: item.id,
+          name: item.name,
+          small_image: item.small_image,
+          price: item.price,
+          spec: item.spec,
+          total_sales: item.total_sales,
+          origin_price: item.origin_price
+        }
+      });
+    },
+     addCart(info){
+        this.$store.dispatch('addCart',info)
+    },
   },
   filters: {
     priceFormat(value) {

@@ -3,21 +3,22 @@
     <div class="top-header">
       <p class="title">购物车</p>
     </div>
-    <div class="cartlist" v-if="cartlist">
+    <div class="cartlist" v-show="!isEmpty">
+      {{shopcartlist}}
       <ul>
-        <li v-for="(item,index) in cartlist" :key="index">
-          <van-checkbox :name="item.name" v-model="checked">
+        <li v-for="(item,index) in shopcartlist" :key="index">
+          <van-checkbox :name="item.name" v-model="item.checked" @click="changeStatus(item.id)" ref='checkboxes'>
             <div class="imgbox">
               <img :src="item.small_image" />
             </div>
             <div class="contentbox">
-              <div class="name">{{item.product_name}}</div>
+              <div class="name">{{item.name}}</div>
               <div class="price">
                 <span class="now_price">{{item.price | priceFormat}}</span>
                 <div class="shopnum">
-                  <span @click.stop="sub_num()">-</span>
-                  <span>{{shopnum}}</span>
-                  <span @click.stop="add_num()">+</span>
+                  <span @click.stop="sub_num(item.id,item.num)">-</span>
+                  <span>{{item.num}}</span>
+                  <span @click.stop="add_num(item.id)">+</span>
                 </div>
               </div>
             </div>
@@ -25,11 +26,11 @@
         </li>
       </ul>
     </div>
-    <van-empty description="购物车是空的" :image="emptyImage" v-else>
+    <van-empty description="购物车是空的" :image="emptyImage" v-show="isEmpty">
       <van-button round type="danger" class="bottom-button" @click="goIndex()">去逛逛</van-button>
     </van-empty>
-    <van-submit-bar :price="priceAll" button-text="提交订单" @submit="onSubmit">
-      <van-checkbox v-model="allchecked">全选</van-checkbox>
+    <van-submit-bar :price="this.$store.getters.getTotalPrice" :button-text="'结算('+this.totalCount()+')'" @submit="onSubmit" v-show="!isEmpty">
+      <van-checkbox v-model="allchecked" @click="checkAll()">全选</van-checkbox>
     </van-submit-bar>
     <van-divider :style="{ color: '#000', borderColor: '#999',fontSize:'0.18rem'}">猜你喜欢</van-divider>
     <div class="guess">
@@ -44,7 +45,7 @@
         <div class="price">
           <span class="now_price">{{item.price | priceFormat}}</span>
           <span class="old_price">{{item.origin_price | priceFormat}}</span>
-          <span class="shopcart">
+          <span class="shopcart" @click.stop="addCart(item)">
             <i class="iconfont icon-gouwuche" />
           </span>
         </div>
@@ -54,104 +55,36 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 import { getAll_lists } from "../../axios/api";
+import { Dialog } from "vant";
 export default {
   data() {
     return {
       emptyImage: require("@/assets/images/shopcart/empty.png"),
       product_lists: [],
-      shopnum: 1,
       checked: true,
       allchecked: true,
-      priceAll:0,
-      cartlist: [
-        {
-          id: "58bf8d1a936edf72323d9bfc",
-          product_name: "清美内酯豆腐 400g/盒",
-          name: "清美内酯豆腐 400g/盒",
-          origin_price: "2.00",
-          price: "2.00",
-          vip_price: "",
-          spec: "质地细嫩 色香味均优于其他普通豆腐",
-          small_image:
-            "https://img.ddimg.mobi/product/2f9f42dd5c3311558682395205.jpg!deliver.product.list",
-          category_id: "58fbf508936edfe3568b599f",
-          sizes: [],
-          total_sales: 9072,
-          month_sales: 0,
-          buy_limit: 0,
-          mark_discount: 0,
-          mark_new: 0,
-          mark_self: 0,
-          status: 1,
-          category_path: "58f9d233936edfe3568b5655,58fbf508936edfe3568b599f",
-          type: 0,
-          stockout_reserved: false,
-          is_promotion: 0,
-          sale_point_msg: [
-            ["", ""],
-            ["", ""]
-          ],
-          activity: [],
-          is_presale: 0,
-          presale_delivery_date_display: "",
-          is_gift: 0,
-          is_onion: 0,
-          is_invoice: 1,
-          sub_list: [],
-          badge_img: "",
-          is_vod: false,
-          stock_number: 24,
-          today_stockout: "可订明日",
-          is_booking: 1
-        },
-        {
-          id: "58bf8d1a936edf72323d9bfc",
-          product_name: "清美内酯豆腐 400g/盒",
-          name: "清美内酯豆腐 400g/盒",
-          origin_price: "2.00",
-          price: "2.00",
-          vip_price: "",
-          spec: "质地细嫩 色香味均优于其他普通豆腐",
-          small_image:
-            "https://img.ddimg.mobi/product/2f9f42dd5c3311558682395205.jpg!deliver.product.list",
-          category_id: "58fbf508936edfe3568b599f",
-          sizes: [],
-          total_sales: 9072,
-          month_sales: 0,
-          buy_limit: 0,
-          mark_discount: 0,
-          mark_new: 0,
-          mark_self: 0,
-          status: 1,
-          category_path: "58f9d233936edfe3568b5655,58fbf508936edfe3568b599f",
-          type: 0,
-          stockout_reserved: false,
-          is_promotion: 0,
-          sale_point_msg: [
-            ["", ""],
-            ["", ""]
-          ],
-          activity: [],
-          is_presale: 0,
-          presale_delivery_date_display: "",
-          is_gift: 0,
-          is_onion: 0,
-          is_invoice: 1,
-          sub_list: [],
-          badge_img: "",
-          is_vod: false,
-          stock_number: 24,
-          today_stockout: "可订明日",
-          is_booking: 1
-        }
-      ]
+      priceAll: 0,
     };
+  },
+  computed: {
+    ...mapState({
+      shopcartlist: state => state.shopcartlist,
+    }),
+    ...mapGetters({
+    }),
+    isEmpty() {
+      return this.totalCount() > 0 ? false : true;
+    },
   },
   created() {
     this.getProductlist();
   },
   methods: {
+    test() {
+      // console.log(this.shopcartlist)
+    },
     async getProductlist() {
       const response1 = await getAll_lists();
       if (response1.message == "success") {
@@ -161,11 +94,36 @@ export default {
     goIndex() {
       this.$router.push({ name: "home" });
     },
-    sub_num(e) {
-      this.shopnum == 0 ? "" : this.shopnum--;
+    sub_num(id, num) {
+      if (num === 1) {
+        Dialog.confirm({
+          message: "确认删除商品？"
+        })
+          .then(() => {
+            this.$store.dispatch("subshopnum", id);
+          })
+          .catch(() => {
+            // on cancel
+          });
+      } else {
+        this.$store.dispatch("subshopnum", id);
+      }
     },
-    add_num() {
-      this.shopnum++;
+    add_num(id) {
+      this.$store.dispatch("addshopnum", id);
+    },
+    totalCount() {
+      return Object.keys(this.shopcartlist).length;
+    },
+    changeStatus(id){
+      this.$store.dispatch("changeChecked",id);
+      console.log(this.shopcartlist)
+    },
+    checkAll(){
+      this.$refs.checkboxes.toggleAll(true);
+    },
+    addCart(info){
+        this.$store.dispatch('addCart',info)
     },
     onSubmit() {},
     Details(item) {
@@ -186,6 +144,9 @@ export default {
   filters: {
     priceFormat(value) {
       return "￥" + value;
+    },
+    priceFormat2(v){
+      return v*100
     }
   }
 };
@@ -351,13 +312,13 @@ export default {
   display: inline-block;
 }
 .shopnum span:nth-child(2) {
-  font-size: 0.25rem;
+  font-size: 0.2rem;
   vertical-align: middle;
   display: inline-block;
   background: #f5f5f5;
-  padding: 0 0.1rem;
+  padding: 0.05rem 0.1rem;
   margin: 0 5px;
-  color: #999;
+  color: #333;
   font-weight: 100;
 }
 /deep/ .van-stepper--round .van-stepper__minus {
@@ -369,7 +330,7 @@ export default {
 /deep/ .van-stepper--round .van-stepper__plus {
   background-color: #45c763;
 }
-/deep/ .van-submit-bar{
+/deep/ .van-submit-bar {
   bottom: 0.5rem;
 }
 </style>

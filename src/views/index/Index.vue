@@ -1,18 +1,20 @@
 <template>
   <div>
     <van-tabbar class="tabbars" v-model="active" active-color="#75a342">
-      <van-tabbar-item v-for="(item,index) in tabbars" :key="index" :to="item.router">
+      <van-tabbar-item v-for="(item,index) in tabbars" :key="index" :to="item.router" :badge="item.name == '购物车' ? getAllnum : ''">
         <span>{{item.name}}</span>
         <template #icon="props">
           <img class="icon-item" :src="props.active ? item.activeIcon : item.inactiveIcon" />
         </template>
       </van-tabbar-item>
+      
     </van-tabbar>
     <router-view />
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -50,6 +52,11 @@ export default {
         }
       ]
     };
+  },
+  computed:{
+    getAllnum(){
+      return this.$store.getters.getSelectAllNum;
+    }
   },
   created() {
     this.tabbarSelected(this.$route.name);

@@ -45,8 +45,8 @@
           <img src="https://img.ddimg.mobi/3f280ff77ab3d1571213379189.jpg?width=750&height=1869" />
         </div>
         <van-goods-action>
-          <van-goods-action-icon icon="cart-o" text="购物车" badge="5" />
-          <van-goods-action-button type="warning" text="加入购物车" />
+          <van-goods-action-icon icon="cart-o" text="购物车" :badge="getAllnum" />
+          <van-goods-action-button type="warning" text="加入购物车" @click="addCart(goodDetails)" />
           <van-goods-action-button type="danger" text="立即购买" />
         </van-goods-action>
       </div>
@@ -55,16 +55,25 @@
 </template>
 
 <script>
+import { mapState,mapGetters } from "vuex";
 export default {
   data() {
     return {
       goodDetails: this.$route.params
     };
   },
+  computed:{
+    getAllnum(){
+      return this.$store.getters.getSelectAllNum;
+    }
+  },
   created() {},
   methods: {
     goback() {
       this.$router.go(-1);
+    },
+    addCart(info) {
+      this.$store.dispatch("addCart", info);
     }
   },
   filters: {
@@ -80,7 +89,7 @@ export default {
   background-color: #f5f5f5;
   overflow-x: hidden;
 }
-#gooddetail::-webkit-scrollbar{
+#gooddetail::-webkit-scrollbar {
   display: none;
 }
 .top-header {

@@ -17,7 +17,7 @@
     </div>
     <div class="content_wrapper">
       <div class="shop-swiper">
-        <div class="shop-item" v-for="(item,index) in shoplist" :key="index">
+        <div class="shop-item" v-for="(item,index) in shoplist" :key="index" @click="Details(item)">
           <div class="product_img">
             <img :src="item.small_image" />
           </div>
@@ -25,7 +25,7 @@
           <div class="product_price">
             <span class="now_price">{{item.price | priceFormat}}</span>
             <span class="old_price">{{item.origin_price | priceFormat}}</span>
-            <span class="shopcart">
+            <span class="shopcart" @click.stop="addCart(item)">
               <i class="iconfont icon-gouwuche" />
             </span>
           </div>
@@ -37,6 +37,7 @@
 
 <script>
 import { getFlashsale } from "../../../../axios/api";
+import { mapState,mapMutation } from "vuex";
 export default {
   data() {
     return {
@@ -57,7 +58,24 @@ export default {
       if (response.message == "success") {
         this.shoplist = response.data.falshsalelist;
       }
-    }
+    },
+    Details(item) {
+      this.$router.push({
+        name: "GoodDetails",
+        params: {
+          id: item.id,
+          name: item.name,
+          small_image: item.small_image,
+          price: item.price,
+          spec: item.spec,
+          total_sales: item.total_sales,
+          origin_price: item.origin_price
+        }
+      });
+    },
+     addCart(info){
+        this.$store.dispatch('addCart',info)
+    },
   },
   filters: {
     priceFormat(value) {
