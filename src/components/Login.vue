@@ -173,7 +173,7 @@ export default {
         this.verifyCode = response.data.code;
         Dialog.alert({
           title: "验证码",
-          message: "验证码是" + this.verifyCode
+          message: "验证码是" + this.verifyCode,
         }).then(() => {
           // on close
         });
@@ -211,8 +211,8 @@ export default {
         }
         if (this.checkPhoneNum() && this.checkVerifyCode()&&this.agree) {
           this.$store.state.isLogin = true;
-          let ref = await getUserinfo(this.phonenum);
-          this.$store.dispatch("curUserinfo", ref.data.userInfo);
+          let res = await getUserinfo(this.phonenum);
+          this.$store.dispatch("curUserinfo", res.data.userInfo);
           this.$router.back();
         }
       }

@@ -14,22 +14,26 @@
         :center="center"
         :zoom="zoom"
         :scroll-wheel-zoom="true"
-        :mapStyle="mapStyle"
       ></baidu-map>
     </div>
     <div class="position-text">
       <div class="now-position">
         <span>您当前的位置</span>
-        <div class="position-item">
+        <div class="position-item" @click="saveAddress(position)">
           <p>{{position}}</p>
           <p>{{address}}</p>
         </div>
       </div>
       <div class="near-position">
         <span>附近地址</span>
-        <div class="position-item">
-          <p>5F创业园</p>
-          <p>科学大道118号</p>
+        <div
+          class="position-item"
+          v-for="(item,index) in surroundingPois"
+          :key="index"
+          @click="saveAddress(item.title)"
+        >
+          <p>{{item.title}}</p>
+          <p>{{item.address}}</p>
         </div>
       </div>
     </div>
@@ -37,6 +41,7 @@
 </template>
 <script>
 import { Toast } from "vant";
+import {EventBus} from '../../../../js/bus'
 import BaiduMap from "vue-baidu-map/components/map/Map.vue";
 import BmGeolocation from "vue-baidu-map/components/map/MapView";
 export default {
@@ -45,8 +50,9 @@ export default {
       ak: "5EFw9zIepcM3a8Z7UtxvFbKpzrFGXqxj",
       center: { lng: 0, lat: 0 },
       zoom: 15,
-      position:'5F创业园',
-      address:"科学大道116",
+      position: "" || "蜀南庭苑",
+      address: "" || "安徽省合肥市蜀山区",
+      surroundingPois: [],
       mapStyle: {
         styleJson: [
           {
@@ -81,28 +87,42 @@ export default {
     },
     handler({ BMap, map }) {
       //定位控制
+      map.enableScrollWheelZoom(true);
       map.addControl(new BMap.GeolocationControl());
       var that = this;
-      //   获取当前地址
+      //   获取当前坐标
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(function(r) {
+        console.log(r);
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        //   console.log("您的位置：" + r.point.lng + "," + r.point.lat);
+          //   console.log("您的位置：" + r.point.lng + "," + r.point.lat);
           that.center.lng = r.point.lng;
           that.center.lat = r.point.lat;
-          Toast("您的位置：" + r.point.lng + "," + r.point.lat);
+          var mk = new BMap.Marker(r.point);
+          map.addOverlay(mk);
+          map.panTo(r.point);
+          that.zoom = 15;
+          // 创建地理编码实例, 并配置参数获取乡镇级数据
+          var myGeo = new BMap.Geocoder({ extensions_town: true });
+          // 根据坐标得到地址描述
+          myGeo.getLocation(new BMap.Point(117.28269909, 31.86694226), function(
+            result
+          ) {
+            if (result) {
+              var res = result.addressComponents;
+              that.position = res.streetNumber;
+              that.address =
+                res.province + res.city + res.district + res.street;
+              that.surroundingPois = result.surroundingPois;
+            }
+          });
         } else {
-          Toast("获取不到您的位置");
+          Toast("failed" + this.getStatus());
         }
       });
-      // 创建地理编码实例, 并配置参数获取乡镇级数据
-      var myGeo = new BMap.Geocoder({ extensions_town: true });
-      // 根据坐标得到地址描述
-      myGeo.getLocation(new BMap.Point(that.center.lng,that.center.lat), function(result) {
-        if (result) {
-          that.address = result.address
-        }
-      });
+    },
+    saveAddress(address){
+       EventBus.$emit('local_address',address)
     }
   }
 };

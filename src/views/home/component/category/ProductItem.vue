@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapAction, mapState, mapMutation } from "vuex";
+import { mapState } from "vuex";
 export default {
   props: {
     product_lists: Array

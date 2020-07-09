@@ -1,11 +1,6 @@
 <template>
   <div id="mine">
-    <div class="m-header" v-if="!isLogin">
-      <div class="top">我的</div>
-      <img src="../../assets/images/mine/icon-test.png" width="90" height="90" />
-      <div class="text" @click="loginFn()">立即登录</div>
-    </div>
-    <div class="m-header" v-else>
+    <div class="m-header" v-if="JSON.stringify(userinfo)!='{}'">
       <div class="top">我的</div>
       <img v-if="userinfo.sex=='1'" src="../../assets/images/mine/girl.png" width="90" height="90" />
       <img v-else src="../../assets/images/mine/boy.png" width="90" height="90" />
@@ -14,25 +9,30 @@
         <div class="phone">手机号：{{userinfo.phone}}</div>
       </div>
     </div>
+    <div class="m-header" v-else>
+      <div class="top">我的</div>
+      <img src="../../assets/images/mine/icon-test.png" width="90" height="90" />
+      <div class="text" @click="loginFn()">立即登录</div>
+    </div>
     <div class="m-con">
       <van-cell-group>
         <van-cell title="我的订单" is-link @click="goChildren('order')" value="查看全部订单" icon="label" />
         <van-cell class="op-cell">
           <ul class="op-list">
             <li @click="goOrder(1)">
-              <van-icon name="paid" badge="0" />
+              <van-icon name="paid" :badge="unpaid" />
               <span class>待支付</span>
             </li>
             <li @click="goOrder(2)">
-              <van-icon name="gift-o" badge="9" />
+              <van-icon name="gift-o" :badge="unreceived" />
               <span class>待收货</span>
             </li>
             <li @click="goOrder(3)">
-              <van-icon name="smile-comment-o" badge="9" />
+              <van-icon name="smile-comment-o" :badge="unevaluated" />
               <span class>待评价</span>
             </li>
             <li>
-              <van-icon name="after-sale" badge="9" />
+              <van-icon name="after-sale" :badge="aftersaled" />
               <span class>售后/退款</span>
             </li>
           </ul>
@@ -47,39 +47,56 @@
         <van-cell title="我的绿卡" is-link @click="goChildren('myvip')" icon="vip-card" />
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="联系客服" is-link @click="goChildren('myvip')" value="客服时间07:00-22:00" icon="phone-circle" />
-        <van-cell title="意见反馈" is-link @click="goChildren('feedback')" icon="comment-circle" />
+        <van-cell
+          title="联系客服"
+          is-link
+          @click="link('啦啦啦啦啦')"
+          value="客服时间07:00-22:00"
+          icon="phone-circle"
+        />
+        <van-cell title="意见反馈" is-link @click="link('填了我也收不到')" icon="comment-circle" />
       </van-cell-group>
       <router-view></router-view>
     </div>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+import { Dialog } from "vant";
 export default {
   data() {
-    return {};
+    return {
+      unpaid: "",
+      unreceived: "",
+      unevaluated: "",
+      aftersaled: ""
+    };
+  },
+  created() {
   },
   methods: {
     loginFn() {
       this.$router.push("/login");
     },
     userinfoDetails(list) {
-      this.$router.push({name: "userinfo", params: { list }});
+      this.$router.push({ name: "userinfo", params: { list } });
     },
-    goChildren(name){
-      console.log(name)
-      this.$router.push({name})
+    goChildren(name) {
+      this.$router.push({ name });
     },
-    goOrder(index){
-      this.$router.push({name:"order",params:{index:index}})
+    goOrder(index) {
+      this.$router.push({ name: "order", params: { index: index } });
+    },
+    link(msg) {
+      Dialog.confirm({
+        message: msg
+      }).then({});
     }
   },
   computed: {
     ...mapState({
-      isLogin: state => state.isLogin,
       userinfo: state => state.userinfo
-    })
+    }),
   }
 };
 </script>

@@ -72,8 +72,6 @@ export default {
     ...mapState({
       shopcartlist: state => state.shopcartlist,
     }),
-    ...mapGetters({
-    }),
     isEmpty() {
       return this.totalCount() > 0 ? false : true;
     },
@@ -115,6 +113,7 @@ export default {
     totalCount() {
       return Object.keys(this.shopcartlist).length;
     },
+    // 选中状态
     changeStatus(id){
       this.$store.dispatch("changeChecked",id);
       console.log(this.shopcartlist)

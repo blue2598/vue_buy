@@ -7,11 +7,35 @@
 
 <script>
 import BackToTop from './components/BackToTop'
+import{mapState} from 'vuex'
 export default {
   name: 'App',
   components:{
     BackToTop,
-  }
+  },
+  computed:{
+    ...mapState({
+      userinfo:state=>state.userinfo
+    }),
+  },
+  created(){
+    this.init_userinfo();
+    this.init_shopcart();
+  },
+  methods:{
+    init_userinfo(){
+      var userinfoLocal = localStorage.getItem('userinfo');
+      if(userinfoLocal){
+        this.$store.dispatch('curUserinfo',JSON.parse(userinfoLocal))
+      }
+    },
+    init_shopcart(){
+      var shopcartLocal = localStorage.getItem('shopcart');
+      if(shopcartLocal){
+        this.$store.dispatch('init_shopcart',JSON.parse(shopcartLocal))
+      }
+    }
+  },
 }
 </script>
 

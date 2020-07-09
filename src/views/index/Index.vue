@@ -55,7 +55,7 @@ export default {
   },
   computed:{
     getAllnum(){
-      return this.$store.getters.getSelectAllNum;
+      return this.$store.getters.getSelectAllNum > 0 ? this.$store.getters.getSelectAllNum : '';
     }
   },
   created() {

@@ -11,12 +11,7 @@
         <van-cell title="头像" is-link @click="showName = true" value="客服时间07:00-22:00" />
         <van-cell title="昵称" is-link @click="showName = true" :value="userinfo.name" />
         <van-dialog v-model="showName" title="修改用户名" show-cancel-button>
-          <van-field
-            v-model="username"
-            name="用户名"
-            label="用户名"
-            placeholder="用户名"
-          />
+          <van-field v-model="username" name="用户名" label="用户名" placeholder="用户名" />
         </van-dialog>
         <van-cell title="性别" is-link @click="showSex = true" :value="userinfo.sex=='1'?'女':'男'" />
         <van-action-sheet v-model="showSex" title="标题">
@@ -45,12 +40,7 @@
         </van-action-sheet>
         <van-cell title="手机号" is-link @click="showPhone = true" :value="userinfo.phone" />
         <van-dialog v-model="showPhone" title="修改手机号" show-cancel-button>
-          <van-field
-            v-model="phone"
-            name="手机号"
-            label="手机号"
-            placeholder="手机号"
-          />
+          <van-field v-model="phone" name="手机号" label="手机号" placeholder="手机号" />
         </van-dialog>
       </div>
     </div>
@@ -62,6 +52,7 @@
 
 <script>
 import { Dialog } from "vant";
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -73,10 +64,14 @@ export default {
       showBirthday: false,
       showPhone: false,
       sex: "1",
-      username:'',
-      phone:'',
-      userinfo: this.$route.params.list
+      username: "",
+      phone: "",
     };
+  },
+  computed:{
+    ...mapState({
+      userinfo:state=>state.userinfo
+    })
   },
   created() {},
   methods: {
@@ -88,7 +83,11 @@ export default {
         message: "确认退出登录吗"
       })
         .then(() => {
+          localStorage.removeItem('userinfo')
+          localStorage.removeItem('shopcart')
           this.$router.push("/login");
+          this.$store.dispatch('removeUserinfo')
+          this.$store.dispatch('removeShopcart')
         })
         .catch(() => {
           // on cancel

@@ -8,13 +8,21 @@
     </div>
     <van-tabs sticky animated swipeable offset-top="46" v-model="active">
       <van-tab title="全部">
-        <ul>
-          <li style="font-size:15px" v-for="(item,index) in 100" :key="index">{{item}}</li>
-        </ul>
+        <van-empty description="暂时还没有相关订单" :image="emptyImage" v-show="isEmpty">
+        </van-empty>
       </van-tab>
-      <van-tab title="待支付">内容 2</van-tab>
-      <van-tab title="待收货">内容 3</van-tab>
-      <van-tab title="待评价">内容 3</van-tab>
+      <van-tab title="待支付">
+        <van-empty description="暂时还没有相关订单" :image="emptyImage" v-show="isEmpty">
+        </van-empty>
+      </van-tab>
+      <van-tab title="待收货">
+        <van-empty description="暂时还没有相关订单" :image="emptyImage" v-show="isEmpty">
+        </van-empty>
+      </van-tab>
+      <van-tab title="待评价">
+        <van-empty description="暂时还没有相关订单" :image="emptyImage" v-show="isEmpty">
+        </van-empty>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -24,7 +32,9 @@ import { Toast } from "vant";
 export default {
   data() {
     return {
-      active: 0
+      active: 0,
+      emptyImage: require("@/assets/images/mine/noData.jpeg"),
+      isEmpty:true
     };
   },
   created() {
@@ -41,7 +51,7 @@ export default {
 
 <style scoped>
 #myorder {
-  background-color: #fff;
+  background-color: #f5f5f5;
   position: fixed;
   top: 0;
   width: 100%;
@@ -85,4 +95,5 @@ export default {
 /deep/ .van-tabs__line {
   background-color: #3bba63 !important;
 }
+
 </style>

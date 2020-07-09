@@ -2,8 +2,17 @@ export default{
     curUserinfo(context,list){
         context.commit('curUserinfo',list)
     },
+    removeUserinfo(context){
+        context.commit('removeUserinfo')
+    },
     addCart(context,info){
         context.commit('addCart',info)
+    },
+    removeShopcart(context){
+        context.commit('removeShopcart')
+    },
+    init_shopcart(context,list){
+        context.commit('init_shopcart',list)
     },
     addshopnum(context,id){
         context.commit('addshopnum',id)
@@ -13,5 +22,5 @@ export default{
     },
     changeChecked(context,id){
         context.commit('changeChecked',id)
-    }
+    },
 }

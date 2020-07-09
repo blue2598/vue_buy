@@ -21,6 +21,8 @@ import Eat from '../views/recommend/Eat'
 
 import GoodDetails from '../components/GoodDetails.vue'
 import Login from '../components/Login.vue'
+
+import store from '../store/index'
 Vue.use(Router)
 
 const originalPush = Router.prototype.push;
@@ -72,32 +74,53 @@ const router = new Router({
                 path:'userinfo',
                 name:'userinfo',
                 component:Userinfo,
+                meta:{
+                    needLogin:true
+                }
             },
             {
                 path:'coupon',
                 name:'coupon',
                 component:Coupon,
+                meta:{
+                    needLogin:true
+                }
             },{
                 path:'deliveryaddress',
                 name:'deliveryaddress',
                 component:Deliveryaddress,
+                meta:{
+                    needLogin:true
+                },
                 children:[{
                     path:'addaddress',
                     name:'addaddress',
                     component:Addaddress,
+                    meta:{
+                        needLogin:true
+                    }
                 }]
             },{
                 path:'feedback',
                 name:'feedback',
-                component:Feedback,
+                component:Feedback, 
+                meta:{
+                    needLogin:true
+                }
             },{
                 path:'myvip',
                 name:'myvip',
                 component:Myvip,
+                meta:{
+                    needLogin:true
+                }
             },{
                 path:'order',
                 name:'order',
                 component:Order,
+                meta:{
+                    needLogin:true
+                }
             }]
            
         },{
@@ -115,4 +138,20 @@ const router = new Router({
         component:Login
     }]
 })
+
+//路由守卫
+router.beforeEach((to, from, next) => {
+    if (to.meta.needLogin) {
+        if (JSON.stringify(store.state.userinfo)!='{}') {
+            next()
+        } else {
+            next({
+                path: '/login'
+            })
+        }
+    } else {
+        next()
+    }
+})
+
 export default router

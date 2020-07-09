@@ -3,7 +3,7 @@
       <div class="position_wrapper">
           <div class="position_box" @click="GoMap()">
               <i class="iconfont icon-dingwei"></i>
-              <span>请选择位置</span>
+              <span>{{msg}}</span>
               <i class="iconfont icon-jiantouxia"></i>
           </div>
       </div>
@@ -17,11 +17,18 @@
 </template>
 
 <script>
+import {EventBus} from '../../../../js/bus'
 export default {
     data(){
         return {
             scrollTop:0,
+            msg:'请输入位置'
         }
+    },
+    created(){
+        EventBus.$on('local_address',address=>{
+            this.msg = address;
+        })
     },
     mounted(){
         window.addEventListener('scroll', this.getScrollTop);
