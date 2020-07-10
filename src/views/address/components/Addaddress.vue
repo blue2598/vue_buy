@@ -4,39 +4,65 @@
       <span class="goback" @click="goback()">
         <i class="iconfont icon-zuojiantou"></i>
       </span>
-      <p class="title">{{title}}</p>
+      <p class="title">添加地址</p>
     </div>
     <div class="address">
-      <div class="hasaddress" v-if="hasAddress"></div>
-      <div class="noaddress">
-        <div class="imgbox">
-          <img src="../../../assets/images/mine/noaddress.png" />
-          <div class="text">还没有添加地址哦，快去添加一个吧</div>
-        </div>
-        <button @click="goChildren('addaddress')">添加地址</button>
-      </div>
+      <van-address-edit
+        :area-list="areaList"
+        show-postal
+        show-delete
+        show-set-default
+        :area-columns-placeholder="['请选择', '请选择', '请选择']"
+        @save="onSave"
+        @delete="onDelete"
+      />
     </div>
-    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { Dialog } from "vant";
+import { Toast,AddressEdit } from "vant";
+import areaList from '../../../js/arealist'
 export default {
   data() {
     return {
-      title: "添加地址",
-      hasAddress: false
+       areaList,
+      searchResult: [],
+      content:''
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
     goback() {
-      this.$router.go(-1);
+      this.$router.back(-1);
     },
-    goChildren(name){
-      this.$router.push({name})
+    onSave(content) {
+      let id = this.getID();
+      content['id'] = id,
+      content['address'] = content.province + content.city + content.county + content.addressDetail;
+      this.$store.dispatch('addDeliveryaddress',content);
+      this.$router.back(-1)
     },
+    getID(){
+      var date = new Date()
+      return date.getTime()
+    },
+    onDelete() {
+      Toast("delete");
+    },
+    // onChangeDetail(val) {
+    //   if (val) {
+    //     this.searchResult = [
+    //       {
+    //         name: "黄龙万科中心",
+    //         address: "杭州市西湖区"
+    //       }
+    //     ];
+    //   } else {
+    //     this.searchResult = [];
+    //   }
+    // }
   },
   filters: {}
 };
@@ -89,7 +115,7 @@ export default {
   width: 100%;
   height: 100vh;
 }
-.noaddress .text{
+.noaddress .text {
   font-size: 0.16rem;
   color: #666;
 }
@@ -103,7 +129,7 @@ export default {
 .noaddress img {
   width: 220px;
 }
-.noaddress button {
+.noaddress button{
   background-color: #45c763;
   border: 0;
   border-radius: 25px;

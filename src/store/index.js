@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const state = {
     userinfo:{},
     shopcartlist:{},
+    deliveryaddress:[],
 }
 export default new Vuex.Store({
     state,

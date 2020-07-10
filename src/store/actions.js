@@ -23,4 +23,10 @@ export default{
     changeChecked(context,id){
         context.commit('changeChecked',id)
     },
+    addDeliveryaddress(context,id){
+        context.commit('addDeliveryaddress',id)
+    },
+    init_deliveryaddress(context,arr){
+        context.commit('init_deliveryaddress',arr)
+    },
 }

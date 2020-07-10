@@ -1,68 +1,77 @@
 <template>
-  <div id="userinfo">
+  <div id="delivery">
     <div class="top-header">
       <span class="goback" @click="goback()">
         <i class="iconfont icon-zuojiantou"></i>
       </span>
-      <p class="title">添加地址</p>
+      <p class="title">{{title}}</p>
     </div>
     <div class="address">
-      <van-address-edit
-        :area-list="areaList"
-        show-postal
-        show-delete
-        show-set-default
-        show-search-result
-        :search-result="searchResult"
-        :area-columns-placeholder="['请选择', '请选择', '请选择']"
-        @save="onSave"
-        @delete="onDelete"
-        @change-detail="onChangeDetail"
-      />
+      <div class="hasaddress" v-if="deliveryaddress.length!=0">
+        <van-address-list
+          v-model="chosenAddressId"
+          :list="deliveryaddress"
+          default-tag-text="默认"
+          @add="onAdd"
+          @edit="onEdit"
+        />
+      </div>
+      <div class="noaddress" v-else>
+        <div class="imgbox">
+          <img src="../../assets/images/mine/noaddress.png" />
+          <div class="text">还没有添加地址哦，快去添加一个吧</div>
+        </div>
+        <button @click="goChildren('addaddress')">添加地址</button>
+      </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { Toast,AddressEdit } from "vant";
-import areaList from '../../../../js/arealist'
+import { Dialog,Toast } from "vant";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-       areaList,
-      searchResult: [],
+      title: "添加地址",
+      hasAddress: false,
+      chosenAddressId:''
     };
   },
-  created() {},
-  methods: {
-    goback() {
-      this.$router.go(-1);
-    },
-    onSave() {
-      Toast("save");
-    },
-    onDelete() {
-      Toast("delete");
-    },
-    onChangeDetail(val) {
-      if (val) {
-        this.searchResult = [
-          {
-            name: "黄龙万科中心",
-            address: "杭州市西湖区"
-          }
-        ];
-      } else {
-        this.searchResult = [];
-      }
-    }
+  created() {
+    this.test();
   },
-  filters: {}
+  computed: {
+    ...mapState({
+      deliveryaddress: state => state.deliveryaddress
+    })
+  },
+  methods: {
+    test() {
+      console.log(this.deliveryaddress);
+    },
+    goback() {
+      this.$router.back(-1);
+    },
+    goChildren(name) {
+      this.$router.push({ name });
+    },
+     onAdd() {
+      this.$router.push({ name:'addaddress' });
+    },
+    onEdit(item, index) {
+      Toast('编辑地址:' + index);
+    },
+
+  },
+  filters: {
+  }
 };
 </script>
 
 <style scoped>
-#userinfo {
+#delivery {
   background-color: #fff;
   position: fixed;
   top: 0;
@@ -122,7 +131,8 @@ export default {
 .noaddress img {
   width: 220px;
 }
-.noaddress button {
+.noaddress button,
+/deep/ .van-address-list__add{
   background-color: #45c763;
   border: 0;
   border-radius: 25px;

@@ -2,12 +2,18 @@
   <div id="shop">
     <div class="top-header">
       <p class="title">购物车</p>
+      <span class="clearall" @click='clearAll()' v-show="!isEmpty">清空</span>
     </div>
+    <!-- 购物车不为空 -->
     <div class="cartlist" v-show="!isEmpty">
-      {{shopcartlist}}
       <ul>
-        <li v-for="(item,index) in shopcartlist" :key="index">
-          <van-checkbox :name="item.name" v-model="item.checked" @click="changeStatus(item.id)" ref='checkboxes'>
+        <li v-for="(item,index) in shopcartlist" :key="index" 
+            ref="checkboxes">
+          <van-checkbox
+            :name="item.name"
+            v-model="item.checked"
+            @click="changeStatus(item.id)"
+          >
             <div class="imgbox">
               <img :src="item.small_image" />
             </div>
@@ -26,10 +32,17 @@
         </li>
       </ul>
     </div>
+    <!-- 购物车为空 -->
     <van-empty description="购物车是空的" :image="emptyImage" v-show="isEmpty">
       <van-button round type="danger" class="bottom-button" @click="goIndex()">去逛逛</van-button>
     </van-empty>
-    <van-submit-bar :price="this.$store.getters.getTotalPrice" :button-text="'结算('+this.totalCount()+')'" @submit="onSubmit" v-show="!isEmpty">
+    <!-- 提交订单 -->
+    <van-submit-bar
+      :price="this.$store.getters.getTotalPrice"
+      :button-text="'结算('+this.totalCount()+')'"
+      @submit="onSubmit"
+      v-show="!isEmpty"
+    >
       <van-checkbox v-model="allchecked" @click="checkAll()">全选</van-checkbox>
     </van-submit-bar>
     <van-divider :style="{ color: '#000', borderColor: '#999',fontSize:'0.18rem'}">猜你喜欢</van-divider>
@@ -64,17 +77,20 @@ export default {
       emptyImage: require("@/assets/images/shopcart/empty.png"),
       product_lists: [],
       checked: true,
-      allchecked: true,
-      priceAll: 0,
+      allchecked: false,
+      priceAll: 0
     };
+  },
+  watch: {
+    allchecked(v) {}
   },
   computed: {
     ...mapState({
-      shopcartlist: state => state.shopcartlist,
+      shopcartlist: state => state.shopcartlist
     }),
     isEmpty() {
       return this.totalCount() > 0 ? false : true;
-    },
+    }
   },
   created() {
     this.getProductlist();
@@ -114,17 +130,18 @@ export default {
       return Object.keys(this.shopcartlist).length;
     },
     // 选中状态
-    changeStatus(id){
-      this.$store.dispatch("changeChecked",id);
-      console.log(this.shopcartlist)
+    changeStatus(id) {
+      this.$store.dispatch("changeChecked", id);
     },
-    checkAll(){
-      this.$refs.checkboxes.toggleAll(true);
+    checkAll() {
+      // this.$refs.checkboxes.toggleAll(true);
     },
-    addCart(info){
-        this.$store.dispatch('addCart',info)
+    addCart(info) {
+      this.$store.dispatch("addCart", info);
     },
-    onSubmit() {},
+    onSubmit() {
+      this.$router.push({ name: "settlement" });
+    },
     Details(item) {
       this.$router.push({
         name: "GoodDetails",
@@ -138,14 +155,23 @@ export default {
           origin_price: item.origin_price
         }
       });
+    },
+    clearAll(){
+      Dialog.confirm({
+        title:"温馨提示",
+        message:'确认清空购物车？'
+      })
+      .then(()=>{
+        this.$store.dispatch('removeShopcart')
+      })
     }
   },
   filters: {
     priceFormat(value) {
       return "￥" + value;
     },
-    priceFormat2(v){
-      return v*100
+    priceFormat2(v) {
+      return v * 100;
     }
   }
 };
@@ -174,6 +200,15 @@ export default {
   padding: 0;
   margin: 0;
   line-height: 0.5rem;
+}
+.clearall{
+  font-size: 0.14rem;
+  color: #45c763;
+  position: absolute;
+  right: 0.2rem;
+  top:0;
+  bottom: 0;
+  margin: auto;
 }
 /deep/ .van-empty__image {
   width: 276px;

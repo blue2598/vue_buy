@@ -21,6 +21,7 @@ export default {
   created(){
     this.init_userinfo();
     this.init_shopcart();
+    this.init_deliveryaddress();
   },
   methods:{
     init_userinfo(){
@@ -33,6 +34,12 @@ export default {
       var shopcartLocal = localStorage.getItem('shopcart');
       if(shopcartLocal){
         this.$store.dispatch('init_shopcart',JSON.parse(shopcartLocal))
+      }
+    },
+    init_deliveryaddress(){
+      var deliveryaddress = localStorage.getItem('deliveryaddress');
+      if(deliveryaddress){
+        this.$store.dispatch('init_deliveryaddress',JSON.parse(deliveryaddress))
       }
     }
   },

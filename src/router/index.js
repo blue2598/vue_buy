@@ -10,14 +10,16 @@ import Category from '../views/category/Category'
 import Personal from '../views/personal/Personal'
 import Userinfo from '../views/personal/components/Userinfo.vue'
 import Coupon from '../views/personal/components/Coupon.vue'
-import Deliveryaddress from '../views/personal/components/Deliveryaddress.vue'
-import Addaddress from '../views/personal/components/addressCom/Addaddress.vue'
+import Deliveryaddress from '../views/address/Deliveryaddress.vue'
+import Addaddress from '../views/address/components/Addaddress.vue'
 import Feedback from '../views/personal/components/Feedback.vue'
 import Myvip from '../views/personal/components/Myvip.vue'
 import Order from '../views/personal/components/Order.vue'
 
 import Shopcart from '../views/shopcart/Shopcart.vue'
 import Eat from '../views/recommend/Eat'
+
+import Settlement from '../views/settlement/settlement.vue'
 
 import GoodDetails from '../components/GoodDetails.vue'
 import Login from '../components/Login.vue'
@@ -86,21 +88,6 @@ const router = new Router({
                     needLogin:true
                 }
             },{
-                path:'deliveryaddress',
-                name:'deliveryaddress',
-                component:Deliveryaddress,
-                meta:{
-                    needLogin:true
-                },
-                children:[{
-                    path:'addaddress',
-                    name:'addaddress',
-                    component:Addaddress,
-                    meta:{
-                        needLogin:true
-                    }
-                }]
-            },{
                 path:'feedback',
                 name:'feedback',
                 component:Feedback, 
@@ -127,6 +114,26 @@ const router = new Router({
             path:'map',
             name:'map',
             component: Map,
+        }]
+    },{
+        //订单结算
+        path:'settlement',
+        name:'settlement',
+        component:Settlement,
+    },{
+        path:'deliveryaddress',
+        name:'deliveryaddress',
+        component:Deliveryaddress,
+        meta:{
+            needLogin:true
+        },
+        children:[{
+            path:'addaddress',
+            name:'addaddress',
+            component:Addaddress,
+            meta:{
+                needLogin:true
+            }
         }]
     },{
         path:'/goodDetails',

@@ -40,9 +40,10 @@ export default {
             state.shopcartlist = list
         }
     },
-    //退出清空购物车
+    //清空购物车
     removeShopcart(state) {
         state.shopcartlist = {};
+        localStorage.removeItem('shopcart')
     },
     //购物车增加商品
     addshopnum(state, id) {
@@ -78,4 +79,16 @@ export default {
         localStorage.setItem('shopcart', JSON.stringify(state.shopcartlist))
     },
     //保存选中的地址
+    addDeliveryaddress(state,list){
+       state.deliveryaddress=[
+           ...state.deliveryaddress,list
+    ]
+      localStorage.setItem('deliveryaddress',JSON.stringify(state.deliveryaddress))
+    },
+    // 初始化收货地址
+    init_deliveryaddress(state,arr){
+        if(arr){
+            state.deliveryaddress = arr;
+        }
+    }
 }

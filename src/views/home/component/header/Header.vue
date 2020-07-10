@@ -22,12 +22,19 @@ export default {
     data(){
         return {
             scrollTop:0,
-            msg:'请输入位置'
+            msg:localStorage.getItem('address') || '请选择位置'
         }
     },
     created(){
-        EventBus.$on('local_address',address=>{
-            this.msg = address;
+        //需要接收值的组件在created生命周期函数里写$on，需要往外传值的组件在destroyed生命周期函数函数里写：
+        //否则只能接收到值，但是页面不渲染更新
+        EventBus.$on('local_address',(val)=>{
+            if(val){
+                this.msg = val;
+            }else{
+                //点到地图页面 不选就返回
+                localStorage.getItem('address')?this.msg = localStorage.getItem('address'):"请选择位置"
+            }
         })
     },
     mounted(){
@@ -39,7 +46,7 @@ export default {
         },
          getScrollTop(){
             this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-        }
+        },
     }
 }
 </script>
@@ -76,6 +83,15 @@ export default {
     width: 98%;
     border-radius: 0.2rem;
     font-size: 0.16rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.position_box span{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 70%;
 }
 .search_wrapper{
     width: 63%;

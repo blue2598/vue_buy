@@ -41,7 +41,7 @@
 </template>
 <script>
 import { Toast } from "vant";
-import {EventBus} from '../../../../js/bus'
+import { EventBus } from "../../../../js/bus";
 import BaiduMap from "vue-baidu-map/components/map/Map.vue";
 import BmGeolocation from "vue-baidu-map/components/map/MapView";
 export default {
@@ -53,33 +53,16 @@ export default {
       position: "" || "蜀南庭苑",
       address: "" || "安徽省合肥市蜀山区",
       surroundingPois: [],
-      mapStyle: {
-        styleJson: [
-          {
-            featureType: "all",
-            elementType: "geometry",
-            stylers: {
-              hue: "#007fff",
-              saturation: 89
-            }
-          },
-          {
-            featureType: "water",
-            elementType: "all",
-            stylers: {
-              color: "#ffffff"
-            }
-          }
-        ]
-      }
+      chooseAddress: ""
     };
   },
   components: {
     BaiduMap,
     BmGeolocation
   },
-  created() {
-    // this.getPosition();
+  beforeDestroy() {
+    //需要接收值的组件在created生命周期函数里写$on，需要往外传值的组件在destroyed生命周期函数函数里写：
+    EventBus.$emit("local_address", this.chooseAddress);
   },
   methods: {
     goback() {
@@ -121,8 +104,10 @@ export default {
         }
       });
     },
-    saveAddress(address){
-       EventBus.$emit('local_address',address)
+    saveAddress(address) {
+      this.chooseAddress = address;
+      localStorage.setItem('address',address)
+      this.$router.back();
     }
   }
 };
