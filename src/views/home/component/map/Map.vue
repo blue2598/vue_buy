@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-import { Toast } from "vant";
+import { Toast, Dialog } from "vant";
 import { EventBus } from "../../../../js/bus";
 import BaiduMap from "vue-baidu-map/components/map/Map.vue";
 import BmGeolocation from "vue-baidu-map/components/map/MapView";
@@ -69,10 +69,10 @@ export default {
       this.$router.go(-1);
     },
     handler({ BMap, map }) {
+      var that = this;
       //定位控制
       map.enableScrollWheelZoom(true);
       map.addControl(new BMap.GeolocationControl());
-      var that = this;
       //   获取当前坐标
       var geolocation = new BMap.Geolocation();
       geolocation.getCurrentPosition(function(r) {
@@ -88,10 +88,13 @@ export default {
           // 创建地理编码实例, 并配置参数获取乡镇级数据
           var myGeo = new BMap.Geocoder({ extensions_town: true });
           // 根据坐标得到地址描述
-          myGeo.getLocation(new BMap.Point(117.28269909, 31.86694226), function(
+          myGeo.getLocation(new BMap.Point(r.point.lng,r.point.lat), function(
             result
           ) {
             if (result) {
+              Dialog.confirm({
+                message:"此处百度地图在国测局制定的GCJ-02首次加密基础上,进行了二次加密,需要坐标转换后使用。而此处并未进行转换,因此位置有偏移"
+              })
               var res = result.addressComponents;
               that.position = res.streetNumber;
               that.address =

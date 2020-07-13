@@ -23,8 +23,14 @@ export default{
     changeChecked(context,id){
         context.commit('changeChecked',id)
     },
-    addDeliveryaddress(context,id){
-        context.commit('addDeliveryaddress',id)
+    addDeliveryaddress(context,list){
+        context.commit('addDeliveryaddress',list)
+    },
+    editDeliveryaddress(context,list){
+        context.commit('editDeliveryaddress',list)
+    },
+    deleteDeliveryaddress(context,id){
+        context.commit('deleteDeliveryaddress',id)
     },
     init_deliveryaddress(context,arr){
         context.commit('init_deliveryaddress',arr)

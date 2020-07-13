@@ -79,15 +79,44 @@ export default {
         localStorage.setItem('shopcart', JSON.stringify(state.shopcartlist))
     },
     //保存选中的地址
-    addDeliveryaddress(state,list){
-       state.deliveryaddress=[
-           ...state.deliveryaddress,list
-    ]
-      localStorage.setItem('deliveryaddress',JSON.stringify(state.deliveryaddress))
+    addDeliveryaddress(state, list) {
+        let deliveryaddress = state.deliveryaddress;
+        if (list.isDefault) {
+            for (var i = 0; i < deliveryaddress.length; i++) {
+                deliveryaddress[i].isDefault = false
+            }
+        }
+        state.deliveryaddress = [
+            ...state.deliveryaddress, list
+        ]
+        localStorage.setItem('deliveryaddress', JSON.stringify(state.deliveryaddress))
+    },
+    //编辑地址
+    editDeliveryaddress(state, list) {
+        let deliveryaddress = state.deliveryaddress;
+        if (list.isDefault) {
+            for (var i = 0; i < deliveryaddress.length; i++) {
+                deliveryaddress[i].isDefault = false
+            }
+        }
+        const index = state.deliveryaddress.findIndex(item => item.id === list.id)
+        state.deliveryaddress.splice(index, 1, list)
+        localStorage.setItem('deliveryaddress', JSON.stringify(state.deliveryaddress))
+    },
+    //删除地址
+    deleteDeliveryaddress(state, id) {
+        let deliveryaddress = state.deliveryaddress;
+        const index = state.deliveryaddress.findIndex(item => item.id === id);
+        //如果删除的是默认地址，将地址列表中第一个设为默认
+        if (deliveryaddress[index].isDefault) {
+            state.deliveryaddress['0'].isDefault= true
+        }
+        state.deliveryaddress.splice(index, 1);
+        localStorage.setItem('deliveryaddress', JSON.stringify(state.deliveryaddress))
     },
     // 初始化收货地址
-    init_deliveryaddress(state,arr){
-        if(arr){
+    init_deliveryaddress(state, arr) {
+        if (arr) {
             state.deliveryaddress = arr;
         }
     }

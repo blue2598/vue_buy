@@ -37,6 +37,7 @@
 <script>
 import { getRconmmendType } from "../../../axios/api";
 import { getRconmmendDefault } from "../../../axios/api";
+import { Toast } from 'vant';
 export default {
   data() {
     return {
@@ -51,8 +52,12 @@ export default {
   },
   methods: {
     async getRconmmendType() {
+      var t1 = Toast.loading({
+        message:'加载中'
+      });
       const response = await getRconmmendType();
       if (response.message == "success") {
+        t1.clear()
         this.typelist = response.data.list;
         this.curIndex = response.data.list[0].id;
         this.getRconmmendDefault(response.data.list[0].id);

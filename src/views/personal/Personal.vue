@@ -56,7 +56,7 @@
         />
         <van-cell title="意见反馈" is-link @click="link('填了我也收不到')" icon="comment-circle" />
       </van-cell-group>
-      <router-view></router-view>
+      <transition name="van-slide-right"><router-view></router-view></transition>
     </div>
   </div>
 </template>

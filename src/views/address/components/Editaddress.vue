@@ -4,13 +4,16 @@
       <span class="goback" @click="goback()">
         <i class="iconfont icon-zuojiantou"></i>
       </span>
-      <p class="title">添加地址</p>
+      <p class="title">编辑地址</p>
     </div>
     <div class="address">
       <van-address-edit
         :area-list="areaList"
         show-postal
+        show-delete
         show-set-default
+        :address-info="addressinfo"
+        :area-columns-placeholder="['请选择', '请选择', '请选择']"
         @save="onSave"
         @delete="onDelete"
       />
@@ -25,35 +28,33 @@ export default {
   data() {
     return {
       areaList,
+      addressinfo: this.$route.params.item,
       searchResult: [],
       content: ""
     };
   },
-  created() {},
+  created() {
+    // console.log(this.addressinfo);
+  },
   methods: {
     goback() {
       this.$router.push({ name: "deliveryaddress" });
     },
     onSave(content) {
-      let id = this.getID();
-      (content["id"] = id),
-        (content["address"] =
-          content.province +
-          content.city +
-          content.county +
-          content.addressDetail);
-      this.$store.dispatch("addDeliveryaddress", content);
+      content["address"] =
+        content.province +
+        content.city +
+        content.county +
+        content.addressDetail;
+      this.$store.dispatch("editDeliveryaddress", content);
       this.goback()
-    },
-    getID() {
-      var date = new Date();
-      return date.getTime();
     },
     onDelete(content) {
       this.$store.dispatch("deleteDeliveryaddress", content.id);
       Toast({
-        message:"删除地址成功"
-      })
+        message: "删除地址成功"
+      });
+      this.goback()
     }
   },
   filters: {}

@@ -113,16 +113,21 @@
         <div class="title">
           <span class="listnum">2</span>绿卡专享券 天天领取优惠
         </div>
-        <div class="content">
-          <div class="left">
-            <span>您当前购物返积分为1倍</span>
+        <div class="contentBox">
+          <div class="leftBox">
+            <div class="leftBoxTitle">
+              您当前购物返积分为
+              <i>1倍</i>
+            </div>
           </div>
-          <div class="right">
-            <span>
+          <div class="rightBox">
+            <div class="rightBoxTitle">
               开通绿卡购物返积分为
-              <big>2倍</big>
-            </span>
+              <i>2倍</i>
+            </div>
           </div>
+          <div class="line"></div>
+          <img class="rocket" src="../../../assets/images/mine/rockets.png" alt />
         </div>
         <div class="button">
           <button>立即开启积分加速</button>
@@ -132,11 +137,26 @@
         <div class="title">
           <span class="listnum">2</span>绿卡专享特权
         </div>
-        <div class="content">
-          <van-tabs sticky animated swipeable offset-top=50>
-            <van-tab title="标签 1">
+        <div class="content list">
+          <van-tabs sticky animated swipeable offset-top="47">
+            <van-tab title="全部">
               <ul>
-                <li style="font-size:15px" v-for="(item,index) in 100" :key="index">{{item}}</li>
+                <li v-for="(item,index) in goodlists" :key="index">
+                  <div class="imgbox">
+                    <img :src="item.small_image" />
+                  </div>
+                  <div class="contentbox">
+                    <div class="name">{{item.product_name}}</div>
+                    <div class="desc">{{item.spec}}</div>
+                    <div class="price">
+                      <span class="now_price">{{item.price | priceFormat}}</span>
+                      <span class="old_price">{{item.origin_price | priceFormat}}</span>
+                      <span class="shopcart">
+                        <i class="iconfont icon-gouwuche" />
+                      </span>
+                    </div>
+                  </div>
+                </li>
               </ul>
             </van-tab>
             <van-tab title="标签 2">内容 2</van-tab>
@@ -149,27 +169,32 @@
 </template>
 
 <script>
-import { Dialog } from "vant";
+import { Dialog, Toast } from "vant";
+import { getListdetails } from "../../../axios/api";
 export default {
   data() {
     return {
-      minDate: new Date(1980, 0, 1),
-      maxDate: new Date(2025, 10, 1),
-      currentDate: new Date(),
-      showName: false,
-      showSex: false,
-      showBirthday: false,
-      showPhone: false,
-      sex: "1",
-      username: "",
-      phone: "",
-      userinfo: ""
+      goodlists: []
     };
   },
-  created() {},
+  created() {
+    this.getRecommend();
+  },
   methods: {
     goback() {
       this.$router.go(-1);
+    },
+    async getRecommend() {
+      var type = "cate00";
+      const t1 = Toast.loading({
+        message: "加载中...",
+        forbidClick: true
+      });
+      const res2 = await getListdetails(type);
+      if (res2.message == "success") {
+        t1.clear();
+        this.goodlists = res2.data.goodlist.list;
+      }
     },
     logout() {
       Dialog.confirm({
@@ -183,7 +208,11 @@ export default {
         });
     }
   },
-  filters: {}
+  filters: {
+    priceFormat(value) {
+      return "￥" + value;
+    }
+  }
 };
 </script>
 
@@ -304,6 +333,8 @@ export default {
   border-bottom: 1px solid #3bba63;
   border-left: 1px dashed #3bba63;
   display: inline-block;
+  margin-bottom: 0.1rem;
+  height: 0.85rem;
 }
 .coupon span.subtitle-1 {
   font-size: 0.15rem;
@@ -319,16 +350,23 @@ export default {
 }
 
 .coupon-box .item .left {
-  width: 86%;
+  width: 75%;
   background-color: #fff;
   display: inline-block;
+  height: 100%;
+  vertical-align: bottom;
+  padding: 0 5%;
+  height: 100%;
 }
 .coupon-box .item .right {
-  width: 14%;
+  width: 15%;
   background-color: #3bba63;
   font-size: 0.16rem;
   display: inline-block;
   text-align: center;
+  color: #fff;
+  vertical-align: bottom;
+  height: 100%;
 }
 .coupon-box .item .left .line-1 {
   color: #3bba63;
@@ -349,5 +387,126 @@ export default {
 .coupon-box .item .left .line-3 {
   font-size: 0.16rem;
   color: #3bba63;
+}
+.contentBox {
+  width: 100%;
+  height: 1rem;
+  font-size: 0.16rem;
+  position: relative;
+}
+.contentBox .leftBox {
+  position: absolute;
+  width: 50%;
+  left: 0.15rem;
+  top: 0.2rem;
+  height: 0.8rem;
+  background-color: #fff;
+  background-color: #dbdbdb;
+  border-radius: 5px;
+  clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+  text-align: left;
+}
+.contentBox .leftBoxTitle {
+  width: 50%;
+  padding-top: 0.1rem;
+  padding-left: 0.2rem;
+  font-size: 0.12rem;
+  color: #111;
+}
+.contentBox .rightBoxTitle {
+  width: 50%;
+  padding-top: 0.1rem;
+  padding-left: 0.65rem;
+  font-size: 0.12rem;
+  color: #111;
+  text-align: right;
+}
+.contentBox i {
+  font-size: 0.2rem;
+}
+.contentBox .rightBox {
+  position: absolute;
+  width: 50%;
+  right: 0.15rem;
+  top: 0.2rem;
+  height: 0.8rem;
+  background-color: #fff;
+  background-color: #6bee66;
+  border-radius: 5px;
+  clip-path: polygon(25% 0 , 100% 0, 100% 100%, 0 100%);
+} 
+.contentBox .line{
+  width: 80%;
+  position: absolute;
+  height: 0.1rem;
+  border-radius: 10px;
+  bottom: 0.08rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-image: linear-gradient(to left, #fbec53, #7affaf);;
+}
+.contentBox .rocket{
+  position: absolute;
+  right: 0;
+  top:0;
+}
+.list ul li {
+  padding: 0.05rem 0.1rem;
+  border-bottom: 1px solid #ccc;
+}
+.list .imgbox {
+  width: 26%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+}
+.list .imgbox img {
+  width: 100%;
+}
+.list .contentbox {
+  width: 74%;
+  display: inline-block;
+}
+.list .contentbox .name {
+  font-size: 0.16rem;
+  padding: 5px 0 5px 5px;
+}
+.list .contentbox .desc {
+  font-size: 0.15rem;
+  color: #999;
+  padding-left: 5px;
+}
+.price {
+  padding: 5px 0 10px 5px;
+  position: relative;
+}
+.now_price {
+  color: rgb(226, 31, 31);
+  font-size: 0.18rem;
+}
+.old_price {
+  color: #999;
+  font-size: 0.14rem;
+  text-decoration: line-through;
+}
+.shopcart {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0.1rem;
+  margin: auto;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  width: 0.3rem;
+  background-color: #d7d7d7;
+  color: #fff;
+  text-align: center;
+  border-radius: 50%;
+}
+.shopcart i {
+  font-size: 0.18rem;
+}
+/deep/ .van-tabs__line {
+  background-color: #3bba63;
 }
 </style>

@@ -8,13 +8,14 @@
     </div>
     <div class="details">
       <div class="addressChoose">
-        <van-contact-card add-text="选择收货地址" @click="chooseAddress()" v-if="!deliveryaddress" />
+        <van-contact-card add-text="选择收货地址" @click="chooseAddress()" v-if="!chooseadd" />
         <van-contact-card
-          v-if="deliveryaddress"
+          v-if="chooseadd"
           type="edit"
-          name="张三"
-          tel="13000000000"
+          :name="name"
+          :tel="tel"
           :editable="false"
+          @click="chooseAddress"
         />
       </div>
       <div class="timeChoose">
@@ -128,7 +129,7 @@ var coupon = {
 export default {
   data() {
     return {
-      deliveryaddress: false,
+      chooseadd:false,
       showtimeChoose: false,
       list: [
         { index: "0", name: "微信支付" },
@@ -139,7 +140,10 @@ export default {
       coupons: [coupon],
       showList: false,
       disabledCoupons: [coupon],
-      message: ""
+      message: "",
+      name:'',
+      tel:'',
+      
     };
   },
   computed: {
@@ -147,13 +151,21 @@ export default {
       shopcartlist: state => state.shopcartlist
     })
   },
-  created() {},
+  created() {
+    this.getDate()
+  },
   methods: {
     goback() {
       this.$router.go(-1);
     },
+    getDate(){
+      var list = JSON.parse(localStorage.getItem('chooseaddress'));
+      this.name=list.name;
+      this.tel = list.tel;
+      this.chooseadd = true
+    },
     chooseAddress() {
-      this.$router.push({name:'deliveryaddress'})
+      this.$router.push({name:'deliveryaddress'});
     },
     payway(val) {
       return val;

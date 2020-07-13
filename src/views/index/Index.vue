@@ -1,14 +1,20 @@
 <template>
   <div>
-    <van-tabbar class="tabbars" v-model="active" active-color="#75a342">
-      <van-tabbar-item v-for="(item,index) in tabbars" :key="index" :to="item.router" :badge="item.name == '购物车' ? getAllnum : ''">
-        <span>{{item.name}}</span>
-        <template #icon="props">
-          <img class="icon-item" :src="props.active ? item.activeIcon : item.inactiveIcon" />
-        </template>
-      </van-tabbar-item>
-      
-    </van-tabbar>
+    <keep-alive>
+      <van-tabbar class="tabbars" v-model="active" active-color="#75a342">
+        <van-tabbar-item
+          v-for="(item,index) in tabbars"
+          :key="index"
+          :to="item.router"
+          :badge="item.name == '购物车' ? getAllnum : ''"
+        >
+          <span>{{item.name}}</span>
+          <template #icon="props">
+            <img class="icon-item" :src="props.active ? item.activeIcon : item.inactiveIcon" />
+          </template>
+        </van-tabbar-item>
+      </van-tabbar>
+    </keep-alive>
     <router-view />
   </div>
 </template>
@@ -53,9 +59,11 @@ export default {
       ]
     };
   },
-  computed:{
-    getAllnum(){
-      return this.$store.getters.getSelectAllNum > 0 ? this.$store.getters.getSelectAllNum : '';
+  computed: {
+    getAllnum() {
+      return this.$store.getters.getSelectAllNum > 0
+        ? this.$store.getters.getSelectAllNum
+        : "";
     }
   },
   created() {
@@ -85,7 +93,7 @@ export default {
 </script>
 
 <style scoped>
-.tabbars{
+.tabbars {
   z-index: 999;
 }
 .icon-item {

@@ -10,8 +10,6 @@ import Category from '../views/category/Category'
 import Personal from '../views/personal/Personal'
 import Userinfo from '../views/personal/components/Userinfo.vue'
 import Coupon from '../views/personal/components/Coupon.vue'
-import Deliveryaddress from '../views/address/Deliveryaddress.vue'
-import Addaddress from '../views/address/components/Addaddress.vue'
 import Feedback from '../views/personal/components/Feedback.vue'
 import Myvip from '../views/personal/components/Myvip.vue'
 import Order from '../views/personal/components/Order.vue'
@@ -20,6 +18,10 @@ import Shopcart from '../views/shopcart/Shopcart.vue'
 import Eat from '../views/recommend/Eat'
 
 import Settlement from '../views/settlement/settlement.vue'
+
+import Deliveryaddress from '../views/address/Deliveryaddress.vue'
+import Addaddress from '../views/address/components/Addaddress.vue'
+import Editaddress from '../views/address/components/Editaddress.vue'
 
 import GoodDetails from '../components/GoodDetails.vue'
 import Login from '../components/Login.vue'
@@ -32,10 +34,20 @@ Router.prototype.push = function push(location){
     return originalPush.call(this,location).catch(err => err);
 }
 const router = new Router({
+    //路由跳转页面不置顶问题
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return {
+                x: 0,
+                y: 0
+            }
+        }
+    },
     routes: [{
         path: '/',
         redirect: '/index',
-        // 是否数据缓存
         meta: {
             keepAlive: true
         },
@@ -131,6 +143,14 @@ const router = new Router({
             path:'addaddress',
             name:'addaddress',
             component:Addaddress,
+            meta:{
+                needLogin:true
+            }
+        },
+        {
+            path:'editaddress',
+            name:'editaddress',
+            component:Editaddress,
             meta:{
                 needLogin:true
             }

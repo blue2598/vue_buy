@@ -9,6 +9,7 @@
     <div class="address">
       <div class="hasaddress" v-if="deliveryaddress.length!=0">
         <van-address-list
+          @click-item="chooseThis"
           v-model="chosenAddressId"
           :list="deliveryaddress"
           default-tag-text="默认"
@@ -24,49 +25,48 @@
         <button @click="goChildren('addaddress')">添加地址</button>
       </div>
     </div>
-    <router-view></router-view>
+    <transition name="van-slide-right">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-import { Dialog,Toast } from "vant";
+import { Dialog, Toast } from "vant";
 import { mapState } from "vuex";
 export default {
   data() {
     return {
       title: "添加地址",
       hasAddress: false,
-      chosenAddressId:''
+      chosenAddressId: ""
     };
   },
-  created() {
-    this.test();
-  },
+  created() {},
   computed: {
     ...mapState({
       deliveryaddress: state => state.deliveryaddress
     })
   },
   methods: {
-    test() {
-      console.log(this.deliveryaddress);
-    },
     goback() {
-      this.$router.back(-1);
+      this.$router.push({ name: "personal" });
     },
     goChildren(name) {
       this.$router.push({ name });
     },
-     onAdd() {
-      this.$router.push({ name:'addaddress' });
+    chooseThis(item){
+      localStorage.setItem('chooseaddress',JSON.stringify(item))
+      this.$router.back();
+    },
+    onAdd() {
+      this.$router.push({ name: "addaddress" });
     },
     onEdit(item, index) {
-      Toast('编辑地址:' + index);
-    },
-
+      this.$router.push({ name: "editaddress", params: { item } });
+    }
   },
-  filters: {
-  }
+  filters: {}
 };
 </script>
 
@@ -132,7 +132,7 @@ export default {
   width: 220px;
 }
 .noaddress button,
-/deep/ .van-address-list__add{
+/deep/ .van-address-list__add {
   background-color: #45c763;
   border: 0;
   border-radius: 25px;
