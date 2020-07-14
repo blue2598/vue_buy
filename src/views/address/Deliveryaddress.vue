@@ -9,7 +9,7 @@
     <div class="address">
       <div class="hasaddress" v-if="deliveryaddress.length!=0">
         <van-address-list
-          @click-item="chooseThis"
+          @select="chooseThis"
           v-model="chosenAddressId"
           :list="deliveryaddress"
           default-tag-text="默认"
@@ -37,9 +37,9 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      title: "添加地址",
+      title: "我的地址",
       hasAddress: false,
-      chosenAddressId: ""
+      chosenAddressId: "",
     };
   },
   created() {},
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     goback() {
-      this.$router.push({ name: "personal" });
+      this.$router.back()
     },
     goChildren(name) {
       this.$router.push({ name });

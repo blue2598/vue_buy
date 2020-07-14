@@ -1,6 +1,6 @@
 <template>
   <div id="vip">
-      <div class="vip_box">
+      <div class="vip_box" @click="go()">
           <i class="iconfont icon-bianzu16"></i>
           <span>加入会员 每年预计节省806元</span>
           <span>五折开卡></span>
@@ -10,7 +10,11 @@
 
 <script>
 export default {
-
+    methods:{
+        go(){
+            this.$router.push({name:'myvip'})
+        }
+    }
 }
 </script>
 

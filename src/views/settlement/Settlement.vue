@@ -7,39 +7,37 @@
       <p class="title">订单结算</p>
     </div>
     <div class="details">
-      <div class="addressChoose">
-        <van-contact-card add-text="选择收货地址" @click="chooseAddress()" v-if="!chooseadd" />
-        <van-contact-card
-          v-if="chooseadd"
-          type="edit"
-          :name="name"
-          :tel="tel"
-          :editable="false"
-          @click="chooseAddress"
-        />
+      <div class="addressChoose" @click="chooseAddress()">
+        <van-contact-card add-text="选择收货地址" :type="type" :name="name" :tel="tel" :editable="false" />
       </div>
       <div class="timeChoose">
         <van-cell title="请选择送达时间" is-link @click="showtimeChoose = true" value="请选择送达时间" />
         <span class="tips" @click="showtimeChoose = true">超时十分钟可获得积分补偿</span>
-        <van-action-sheet v-model="showtimeChoose" title="选择送达时间">
-          <div class="content">内容</div>
+        <van-action-sheet v-model="showtimeChoose" title="标题">
+          <div class="content">
+            <van-datetime-picker
+              v-model="currentDate"
+              type="date"
+              title="选择年月日"
+              :min-date="minDate"
+              :max-date="maxDate"
+            />
+          </div>
         </van-action-sheet>
       </div>
       <div class="goodslist">
         <ul class="cartlist">
-          <li v-for="(item,index) in shopcartlist" :key="index">
-            <div v-if="item['checked']">
-              <div class="imgbox">
-                <img :src="item.small_image" />
-              </div>
-              <div class="contentbox">
-                <div class="name">{{item.name}}</div>
-                <div class="price">
-                  <span class="now_price">{{item.price | priceFormat}}</span>
-                  <div class="shopnum">
-                    <span>x</span>
-                    <span>{{item.num}}</span>
-                  </div>
+          <li v-for="(item,index) in selectGoods" :key="index">
+            <div class="imgbox">
+              <img :src="item.small_image" />
+            </div>
+            <div class="contentbox">
+              <div class="name">{{item.name}}</div>
+              <div class="price">
+                <span class="now_price">{{item.price | priceFormat}}</span>
+                <div class="shopnum">
+                  <span>x</span>
+                  <span>{{item.num}}</span>
                 </div>
               </div>
             </div>
@@ -115,6 +113,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import { Toast } from "vant";
 var coupon = {
   available: 1,
   condition: "无使用门槛\n最多优惠12元",
@@ -129,43 +128,51 @@ var coupon = {
 export default {
   data() {
     return {
-      chooseadd:false,
+      chooseadd: false,
       showtimeChoose: false,
+      currentDate: new Date(),
+      minDate: new Date(),
+      maxDate: new Date(2020, 10, 1),
       list: [
         { index: "0", name: "微信支付" },
         { index: "1", name: "支付宝支付" }
       ],
-      result: 'wechat',
+      result: "wechat",
       chosenCoupon: -1,
       coupons: [coupon],
       showList: false,
       disabledCoupons: [coupon],
       message: "",
-      name:'',
-      tel:'',
-      
+      type: "add",
+      name: null,
+      tel: null
     };
   },
   computed: {
     ...mapState({
       shopcartlist: state => state.shopcartlist
+    }),
+    ...mapGetters({
+      selectGoods: "getSelectGoods"
     })
   },
   created() {
-    this.getDate()
+    this.getDate();
   },
   methods: {
     goback() {
       this.$router.go(-1);
     },
-    getDate(){
-      var list = JSON.parse(localStorage.getItem('chooseaddress'));
-      this.name=list.name;
-      this.tel = list.tel;
-      this.chooseadd = true
+    getDate() {
+      var list = JSON.parse(localStorage.getItem("chooseaddress"));
+      if (list) {
+        this.type = "edit";
+        this.name = list.name;
+        this.tel = list.tel;
+      }
     },
     chooseAddress() {
-      this.$router.push({name:'deliveryaddress'});
+      this.$router.push({ name: "deliveryaddress" });
     },
     payway(val) {
       return val;
@@ -177,7 +184,9 @@ export default {
     onExchange(code) {
       this.coupons.push(coupon);
     },
-    onSubmit() {}
+    onSubmit() {
+      Toast("提交");
+    }
   },
   filters: {
     priceFormat(value) {
@@ -337,8 +346,8 @@ export default {
   margin-bottom: 0.1rem;
 }
 /deep/ .van-radio__icon--checked .van-icon {
-    background-color: #3bba63;
-    border-color: #3bba63;
+  background-color: #3bba63;
+  border-color: #3bba63;
 }
 .money {
   margin-bottom: 50px;

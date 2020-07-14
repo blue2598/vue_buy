@@ -5,6 +5,12 @@ export default{
     removeUserinfo(context){
         context.commit('removeUserinfo')
     },
+    updateUsername(context,list){
+        context.commit('updateUsername',list)
+    },
+    updateUsersex(context,list){
+        context.commit('updateUsersex',list)
+    },
     addCart(context,info){
         context.commit('addCart',info)
     },
@@ -35,4 +41,7 @@ export default{
     init_deliveryaddress(context,arr){
         context.commit('init_deliveryaddress',arr)
     },
+    checkAll(context,data){
+        context.commit('checkAll',data)
+    }
 }

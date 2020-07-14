@@ -6,43 +6,40 @@
       </span>
       <p class="title">我的优惠券</p>
     </div>
-      <van-coupon-list
-        :coupons="coupons"
-        @change="onChange"
-        @exchange="onExchange"
-      />
+    <van-coupon-list :coupons="coupons" @change="onChange" @exchange="onExchange" />
   </div>
 </template>
 
 <script>
 import { Dialog } from "vant";
-const coupon =[
-   {
-  available: 1,
-  condition: "无使用门槛\n最多优惠12元",
-  reason: "",
-  value: 150,
-  name: "优惠券名称",
-  startAt: 1489104000,
-  endAt: 1514592000,
-  valueDesc: "1.5",
-  unitDesc: "元"
-}, {
-  available: 1,
-  condition: "无使用门槛\n最多优惠12元",
-  reason: "",
-  value: 150,
-  name: "优惠券名称",
-  startAt: 1489104000,
-  endAt: 1514592000,
-  valueDesc: "1.5",
-  unitDesc: "元"
-}
+const coupon = [
+  {
+    available: 1,
+    condition: "无使用门槛\n最多优惠12元",
+    reason: "",
+    value: 150,
+    name: "优惠券名称",
+    startAt: 1489104000,
+    endAt: 1514592000,
+    valueDesc: "1.5",
+    unitDesc: "元"
+  },
+  {
+    available: 1,
+    condition: "无使用门槛\n最多优惠12元",
+    reason: "",
+    value: 150,
+    name: "优惠券名称",
+    startAt: 1489104000,
+    endAt: 1514592000,
+    valueDesc: "1.5",
+    unitDesc: "元"
+  }
 ];
 export default {
   data() {
     return {
-      showList:true,
+      showList: true,
       chosenCoupon: -1,
       coupons: coupon,
       disabledCoupons: coupon
@@ -107,5 +104,9 @@ export default {
 .details {
   background-color: #fff;
   padding-top: 0.5rem;
+}
+/deep/ .van-coupon .van-checkbox,
+/deep/ .van-coupon-list__bottom {
+  display: none;
 }
 </style>

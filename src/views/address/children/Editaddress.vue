@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     goback() {
-      this.$router.push({ name: "deliveryaddress" });
+      this.$router.back();
     },
     onSave(content) {
       content["address"] =

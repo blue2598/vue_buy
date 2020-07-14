@@ -2,18 +2,13 @@
   <div id="shop">
     <div class="top-header">
       <p class="title">购物车</p>
-      <span class="clearall" @click='clearAll()' v-show="!isEmpty">清空</span>
+      <span class="clearall" @click="clearAll()" v-show="!isEmpty">清空</span>
     </div>
     <!-- 购物车不为空 -->
     <div class="cartlist" v-show="!isEmpty">
       <ul>
-        <li v-for="(item,index) in shopcartlist" :key="index" 
-            ref="checkboxes">
-          <van-checkbox
-            :name="item.name"
-            v-model="item.checked"
-            @click="changeStatus(item.id)"
-          >
+        <li v-for="(item,index) in shopcartlist" :key="index" ref="checkboxes">
+          <van-checkbox :name="item.name" v-model="item.checked" @click="changeStatus(item.id)">
             <div class="imgbox">
               <img :src="item.small_image" />
             </div>
@@ -39,11 +34,11 @@
     <!-- 提交订单 -->
     <van-submit-bar
       :price="this.$store.getters.getTotalPrice"
-      :button-text="'结算('+this.totalCount()+')'"
+      :button-text="'结算('+this.$store.getters.getSelectNum+')'"
       @submit="onSubmit"
       v-show="!isEmpty"
     >
-      <van-checkbox v-model="allchecked" @click="checkAll()">全选</van-checkbox>
+      <van-checkbox v-model="checkStatus">全选</van-checkbox>
     </van-submit-bar>
     <van-divider :style="{ color: '#000', borderColor: '#999',fontSize:'0.18rem'}">猜你喜欢</van-divider>
     <div class="guess">
@@ -70,19 +65,15 @@
 <script>
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 import { getAll_lists } from "../../axios/api";
-import { Dialog } from "vant";
+import { Dialog, Toast } from "vant";
 export default {
   data() {
     return {
       emptyImage: require("@/assets/images/shopcart/empty.png"),
       product_lists: [],
       checked: true,
-      allchecked: false,
       priceAll: 0
     };
-  },
-  watch: {
-    allchecked(v) {}
   },
   computed: {
     ...mapState({
@@ -90,6 +81,20 @@ export default {
     }),
     isEmpty() {
       return this.totalCount() > 0 ? false : true;
+    },
+    checkStatus: {
+      get() {
+        let status = this.totalCount() > 0;
+        Object.values(this.shopcartlist).forEach(item => {
+          if (!item.checked) {
+            status = false;
+          }
+        });
+        return status;
+      },
+      set(value) {
+        this.$store.dispatch("checkAll", value);
+      }
     }
   },
   created() {
@@ -140,7 +145,11 @@ export default {
       this.$store.dispatch("addCart", info);
     },
     onSubmit() {
-      this.$router.push({ name: "settlement" });
+      if (this.$store.getters.getSelectNum > 0) {
+        this.$router.push({ name: "settlement" });
+      }else{
+        Toast('没选择商品噢')
+      }
     },
     Details(item) {
       this.$router.push({
@@ -156,14 +165,13 @@ export default {
         }
       });
     },
-    clearAll(){
+    clearAll() {
       Dialog.confirm({
-        title:"温馨提示",
-        message:'确认清空购物车？'
-      })
-      .then(()=>{
-        this.$store.dispatch('removeShopcart')
-      })
+        title: "温馨提示",
+        message: "确认清空购物车？"
+      }).then(() => {
+        this.$store.dispatch("removeShopcart");
+      });
     }
   },
   filters: {
@@ -201,12 +209,12 @@ export default {
   margin: 0;
   line-height: 0.5rem;
 }
-.clearall{
+.clearall {
   font-size: 0.14rem;
   color: #45c763;
   position: absolute;
   right: 0.2rem;
-  top:0;
+  top: 0;
   bottom: 0;
   margin: auto;
 }

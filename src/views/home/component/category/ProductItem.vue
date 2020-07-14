@@ -2,7 +2,7 @@
   <div id="productList">
     <div class="list" v-for="(item,index) in product_lists" :key="index" @click="Details(item)">
       <div class="imgbox">
-        <img :src="item.small_image" />
+        <img :src="item.small_image"/>
       </div>
       <div class="text">
         <div class="title van-ellipsis">{{item.product_name}}</div>
@@ -27,7 +27,8 @@ export default {
   },
   data() {
     return {
-      active: 1
+      active: 0,
+      defaultimg:require('../../../../assets/images/default-good.png')
     };
   },
   methods: {

@@ -1,5 +1,6 @@
 <template>
   <div class="login-box">
+    <img class="bgc" :src="bgimg">
     <div class="login-wrapper">
       <img class="bear" :src="bearSrc" />
       <span class="close">
@@ -126,8 +127,7 @@
   </div>
 </template>
 <script>
-import { Toast } from "vant";
-import { Dialog } from "vant";
+import { Toast,Dialog} from "vant";
 import { getVerifyCode,getUserinfo } from "../axios/api";
 import {mapState,mapMutations,mapActions} from 'vuex'
 export default {
@@ -145,16 +145,14 @@ export default {
       loginType: 0, //0是验证码登录，1是密码登录
       showPanel: true, //切换验证码登录和密码登录
       verifyButton: true, //发送验证码按钮禁用状态
-      bearSrc: require("@/assets/images/login/normal.png")
+      bearSrc: require("@/assets/images/login/normal.png"),
+      bgimg: require("@/assets/images/login/back.jpg"),
     };
   },
   computed:{
     ...mapState({
       userinfo:state=>state.userinfo
     })
-  },
-  components: {
-    [Dialog.Component.name]: Dialog.Component
   },
   methods: {
     closeFn() {
@@ -249,7 +247,13 @@ export default {
   left: 0;
   top: 0;
   z-index: 999;
-  background: url("../assets/images/login/back.jpg") center / 100% 100%;
+}
+.bgc{
+  position:fixed;
+  left:0;
+  top:0;
+  width: 100%;
+  height: 100%;
 }
 .login-wrapper {
   width: 90%;

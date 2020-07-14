@@ -1,5 +1,6 @@
 import { mapState } from "vuex"
 import router from '@/router/index.js'
+import { Toast } from "vant";
 export default {
     curUserinfo(state, list) {
         state.userinfo = list;
@@ -7,6 +8,15 @@ export default {
     },
     removeUserinfo(state) {
         state.userinfo = {};
+        localStorage.removeItem('userinfo')
+    },
+    updateUsername(state, info) {
+        state.userinfo.name = info;
+        localStorage.setItem('userinfo', JSON.stringify(state.userinfo))
+    },
+    updateUsersex(state, info) {
+        state.userinfo.sex = info;
+        localStorage.setItem('userinfo', JSON.stringify(state.userinfo))
     },
     //添加商品到购物车
     addCart(state, info) {
@@ -29,6 +39,7 @@ export default {
                 ...shopcartlist
             }
             localStorage.setItem('shopcart', JSON.stringify(state.shopcartlist))
+            Toast('加入购物车成功!')
         } else {
             router.push('/login')
         }
@@ -44,6 +55,9 @@ export default {
     removeShopcart(state) {
         state.shopcartlist = {};
         localStorage.removeItem('shopcart')
+        localStorage.removeItem('address')
+        localStorage.removeItem('chooseaddress')
+        localStorage.removeItem('deliveryaddress')
     },
     //购物车增加商品
     addshopnum(state, id) {
@@ -78,6 +92,16 @@ export default {
         }
         localStorage.setItem('shopcart', JSON.stringify(state.shopcartlist))
     },
+    //购物车全选切换
+    checkAll(state, data) {
+        Object.values(state.shopcartlist).forEach((item, index) => {
+                item.checked = data;
+        })
+        state.shopcartlist = {
+            ...state.shopcartlist
+        }
+        localStorage.setItem('shopcart', JSON.stringify(state.shopcartlist))
+    },
     //保存选中的地址
     addDeliveryaddress(state, list) {
         let deliveryaddress = state.deliveryaddress;
@@ -109,7 +133,7 @@ export default {
         const index = state.deliveryaddress.findIndex(item => item.id === id);
         //如果删除的是默认地址，将地址列表中第一个设为默认
         if (deliveryaddress[index].isDefault) {
-            state.deliveryaddress['0'].isDefault= true
+            state.deliveryaddress['0'].isDefault = true
         }
         state.deliveryaddress.splice(index, 1);
         localStorage.setItem('deliveryaddress', JSON.stringify(state.deliveryaddress))
@@ -119,5 +143,5 @@ export default {
         if (arr) {
             state.deliveryaddress = arr;
         }
-    }
+    },
 }

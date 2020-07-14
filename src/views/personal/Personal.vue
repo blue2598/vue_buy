@@ -6,7 +6,7 @@
       <img v-else src="../../assets/images/mine/boy.png" width="90" height="90" />
       <div class="text" @click="userinfoDetails(userinfo)">
         <div class="username">{{userinfo.name}}</div>
-        <div class="phone">手机号：{{userinfo.phone}}</div>
+        <div class="phone">手机号：{{userinfo.phone | phoneFormat}}</div>
       </div>
     </div>
     <div class="m-header" v-else>
@@ -56,8 +56,10 @@
         />
         <van-cell title="意见反馈" is-link @click="link('填了我也收不到')" icon="comment-circle" />
       </van-cell-group>
-      <transition name="van-slide-right"><router-view></router-view></transition>
     </div>
+    <transition name="van-slide-right">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 <script>
@@ -72,8 +74,7 @@ export default {
       aftersaled: ""
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     loginFn() {
       this.$router.push("/login");
@@ -96,7 +97,13 @@ export default {
   computed: {
     ...mapState({
       userinfo: state => state.userinfo
-    }),
+    })
+  },
+  filters: {
+    phoneFormat(val) {
+      var tel = val.replace(val.substring(3, 7), "****");
+      return tel;
+    }
   }
 };
 </script>

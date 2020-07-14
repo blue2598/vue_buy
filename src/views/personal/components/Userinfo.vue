@@ -8,25 +8,48 @@
     </div>
     <div class="details">
       <div class="item">
-        <van-cell title="头像" is-link @click="showName = true" value="客服时间07:00-22:00" />
+        <van-cell title="头像">
+          <template #right-icon>
+            <img
+              class="avator"
+              v-if="userinfo.sex=='1'"
+              src="../../../assets/images/mine/girl.png"
+              width="90"
+              height="90"
+            />
+            <img
+              class="avator"
+              v-else
+              src="../../../assets/images/mine/boy.png"
+              width="90"
+              height="90"
+            />
+          </template>
+        </van-cell>
         <van-cell title="昵称" is-link @click="showName = true" :value="userinfo.name" />
-        <van-dialog v-model="showName" title="修改用户名" show-cancel-button>
+        <van-dialog v-model="showName" title="修改用户名" show-cancel-button @confirm="updatename">
           <van-field v-model="username" name="用户名" label="用户名" placeholder="用户名" />
         </van-dialog>
         <van-cell title="性别" is-link @click="showSex = true" :value="userinfo.sex=='1'?'女':'男'" />
-        <van-action-sheet v-model="showSex" title="标题">
+        <van-action-sheet v-model="showSex" title="性别">
           <div class="content">
-            <van-field name="radio" label="性别">
-              <template #input>
-                <van-radio-group v-model="sex" direction="horizontal">
-                  <van-radio name="0">男</van-radio>
-                  <van-radio name="1">女</van-radio>
-                </van-radio-group>
-              </template>
-            </van-field>
+            <van-radio-group v-model="userinfo.sex">
+              <van-cell-group @click="updatesex(radio)">
+                <van-cell title="男" clickable @click="radio = '0'">
+                  <template #right-icon>
+                    <van-radio name="0" />
+                  </template>
+                </van-cell>
+                <van-cell title="女" clickable @click="radio = '1'">
+                  <template #right-icon>
+                    <van-radio name="1" />
+                  </template>
+                </van-cell>
+              </van-cell-group>
+            </van-radio-group>
           </div>
         </van-action-sheet>
-        <van-cell title="生日" is-link @click="showBirthday = true" :value="userinfo.birthday" />
+        <van-cell title="生日" is-link @click="showBirthday = true" :value="userinfo.birthday | birthFormat" />
         <van-action-sheet v-model="showBirthday" title="标题">
           <div class="content">
             <van-datetime-picker
@@ -38,7 +61,12 @@
             />
           </div>
         </van-action-sheet>
-        <van-cell title="手机号" is-link @click="showPhone = true" :value="userinfo.phone" />
+        <van-cell
+          title="手机号"
+          is-link
+          @click="showPhone = true"
+          :value="userinfo.phone | phoneFormat"
+        />
         <van-dialog v-model="showPhone" title="修改手机号" show-cancel-button>
           <van-field v-model="phone" name="手机号" label="手机号" placeholder="手机号" />
         </van-dialog>
@@ -51,8 +79,8 @@
 </template>
 
 <script>
-import { Dialog } from "vant";
-import { mapState } from 'vuex';
+import { Dialog, Toast } from "vant";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -66,11 +94,12 @@ export default {
       sex: "1",
       username: "",
       phone: "",
+      sex: null
     };
   },
-  computed:{
+  computed: {
     ...mapState({
-      userinfo:state=>state.userinfo
+      userinfo: state => state.userinfo
     })
   },
   created() {},
@@ -83,18 +112,37 @@ export default {
         message: "确认退出登录吗"
       })
         .then(() => {
-          localStorage.removeItem('userinfo')
-          localStorage.removeItem('shopcart')
           this.$router.push("/login");
-          this.$store.dispatch('removeUserinfo')
-          this.$store.dispatch('removeShopcart')
+          this.$store.dispatch("removeUserinfo");
+          this.$store.dispatch("removeShopcart");
         })
         .catch(() => {
           // on cancel
         });
+    },
+    updatename() {
+      if (this.username) {
+        this.$store.dispatch("updateUsername", this.username);
+        Toast("修改成功");
+      }
+    },
+    updatesex(sex) {
+      setTimeout(() => {
+        (this.showSex = false), this.$store.dispatch("updateUsersex", sex);
+        Toast("修改成功");
+      }, 1000);
     }
   },
-  filters: {}
+  filters: {
+    phoneFormat(val) {
+      var tel = val.replace(val.substring(3, 7), "****");
+      return tel;
+    },
+    birthFormat(val){
+      var bir = val.substring(0,10)
+      return bir
+    }
+  }
 };
 </script>
 
@@ -140,5 +188,9 @@ export default {
 .details {
   background-color: #fff;
   padding-top: 0.5rem;
+}
+.avator {
+  width: 0.3rem;
+  height: 0.3rem;
 }
 </style>

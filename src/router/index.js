@@ -10,18 +10,17 @@ import Category from '../views/category/Category'
 import Personal from '../views/personal/Personal'
 import Userinfo from '../views/personal/components/Userinfo.vue'
 import Coupon from '../views/personal/components/Coupon.vue'
-import Feedback from '../views/personal/components/Feedback.vue'
 import Myvip from '../views/personal/components/Myvip.vue'
 import Order from '../views/personal/components/Order.vue'
 
 import Shopcart from '../views/shopcart/Shopcart.vue'
 import Eat from '../views/recommend/Eat'
-
+//订单结算
 import Settlement from '../views/settlement/settlement.vue'
 
-import Deliveryaddress from '../views/address/Deliveryaddress.vue'
-import Addaddress from '../views/address/components/Addaddress.vue'
-import Editaddress from '../views/address/components/Editaddress.vue'
+import Deliveryaddress from '../views/address/Deliveryaddress'
+import Addaddress from '../views/address/children/Addaddress.vue'
+import Editaddress from '../views/address/children/Editaddress.vue'
 
 import GoodDetails from '../components/GoodDetails.vue'
 import Login from '../components/Login.vue'
@@ -100,13 +99,6 @@ const router = new Router({
                     needLogin:true
                 }
             },{
-                path:'feedback',
-                name:'feedback',
-                component:Feedback, 
-                meta:{
-                    needLogin:true
-                }
-            },{
                 path:'myvip',
                 name:'myvip',
                 component:Myvip,
@@ -129,11 +121,11 @@ const router = new Router({
         }]
     },{
         //订单结算
-        path:'settlement',
+        path:'/settlement',
         name:'settlement',
         component:Settlement,
     },{
-        path:'deliveryaddress',
+        path:'/deliveryaddress',
         name:'deliveryaddress',
         component:Deliveryaddress,
         meta:{
@@ -146,8 +138,7 @@ const router = new Router({
             meta:{
                 needLogin:true
             }
-        },
-        {
+        },{
             path:'editaddress',
             name:'editaddress',
             component:Editaddress,
@@ -165,7 +156,6 @@ const router = new Router({
         component:Login
     }]
 })
-
 //路由守卫
 router.beforeEach((to, from, next) => {
     if (to.meta.needLogin) {

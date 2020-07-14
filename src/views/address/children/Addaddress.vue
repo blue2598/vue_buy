@@ -32,7 +32,7 @@ export default {
   created() {},
   methods: {
     goback() {
-      this.$router.push({ name: "deliveryaddress" });
+      this.$router.back();
     },
     onSave(content) {
       let id = this.getID();
