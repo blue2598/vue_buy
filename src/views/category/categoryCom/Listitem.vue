@@ -1,14 +1,19 @@
 <template>
   <div id="listitem">
     <div class="type">
-      <span class="item" :class="actived">猜你喜欢</span>
-      <span class="item">会员特价</span>
+      <span
+        class="item"
+        v-for="(item,index) in goodlists"
+        :key="index"
+        :class="index==activedid ? actived : '' "
+        @click="changeIndex(index)"
+      >{{item.name}}</span>
     </div>
     <div class="goods">
       <div class="title">{{nowtitle}}</div>
       <div class="goodsitem">
-        <ul>
-          <li v-for="(item,index) in goodlists" :key="index" @click="Details(item)">
+        <ul v-for="(e,i) in goodlists" :key="i" v-show="i==showIndex">
+          <li v-for="(item,index) in e.products" :key="index" @click="Details(item)">
             <div class="imgbox">
               <img :src="item.small_image" />
             </div>
@@ -31,7 +36,7 @@
 </template>
 <script>
 import { getListdetails, getRecommendTypeType } from "../../../axios/api";
-import {mapAction,mapState,mapMutation} from 'vuex'
+import { mapAction, mapState, mapMutation } from "vuex";
 import { Toast } from "vant";
 export default {
   data() {
@@ -39,25 +44,63 @@ export default {
       active: 0,
       actived: "actived",
       nowtitle: "猜你喜欢",
+      activedid: 0,
       typelists: [],
-      goodlists: []
+      goodlists: [],
+      showIndex: 0
     };
+  },
+  watch: {
+    listid: function(val) {
+      this.getClickDetail(val);
+    }
+  },
+  props: {
+    listid: String
   },
   created() {
     this.getRecommend();
   },
   methods: {
+    //初始化数据推荐
     async getRecommend() {
-      var type = "cate00";
-     const t1= Toast.loading({
+      const t1 = Toast.loading({
         message: "加载中...",
-        forbidClick: true,
+        forbidClick: true
       });
-      const res2 = await getListdetails(type);
+      let id = this.listid
+      const res2 = await getListdetails(id);
       if (res2.message == "success") {
         t1.clear();
-        this.goodlists = res2.data.goodlist.list;
+        this.goodlists = res2.data.cate;
+        this.nowtitle = res2.data.cate[0].name;
       }
+    },
+    //得到左边父组件切换分类的id
+    async getClickDetail(id) {
+      this.goodlists = [];
+      this.nowtitle = '';
+      this.showIndex = 0;
+      const t1 = Toast.loading({
+        message: "加载中...",
+        forbidClick: true
+      });
+      const res2 = await getListdetails(id);
+      if (res2.message == "success") {
+        t1.clear();
+        this.goodlists = res2.data.cate;
+        this.nowtitle = res2.data.cate[0].name;
+      }else{
+        if(res2.code == '0002'){
+          Toast('获取数据失败，请稍候重试')
+        }
+      }
+    },
+    //切换头部选项
+    changeIndex(index) {
+      this.activedid = index;
+      this.showIndex = index;
+      this.nowtitle = this.goodlists[index].name;
     },
     Details(item) {
       this.$router.push({
@@ -73,9 +116,9 @@ export default {
         }
       });
     },
-     addCart(info){
-        this.$store.dispatch('addCart',info)
-    },
+    addCart(info) {
+      this.$store.dispatch("addCart", info);
+    }
   },
   filters: {
     priceFormat(value) {
@@ -90,6 +133,17 @@ export default {
 }
 .type {
   padding: 0.1rem 0;
+  position: fixed;
+  top: 0.5rem;
+  width: 73%;
+  background-color: #fff;
+  z-index: 99;
+  overflow: hidden;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+.type::-webkit-scrollbar{
+  display: none;
 }
 .item {
   font-size: 0.16rem;
@@ -100,6 +154,7 @@ export default {
   color: #46c527;
 }
 .goods {
+  margin-top: 0.3rem;
   background-color: #f5f5f5;
 }
 .goods .title {

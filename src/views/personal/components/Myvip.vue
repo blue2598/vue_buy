@@ -159,8 +159,42 @@
                 </li>
               </ul>
             </van-tab>
-            <van-tab title="标签 2">内容 2</van-tab>
-            <van-tab title="标签 3">内容 3</van-tab>
+            <van-tab title="标签 2"><ul>
+                <li v-for="(item,index) in goodlists" :key="index">
+                  <div class="imgbox">
+                    <img :src="item.small_image" />
+                  </div>
+                  <div class="contentbox">
+                    <div class="name">{{item.product_name}}</div>
+                    <div class="desc">{{item.spec}}</div>
+                    <div class="price">
+                      <span class="now_price">{{item.price | priceFormat}}</span>
+                      <span class="old_price">{{item.origin_price | priceFormat}}</span>
+                      <span class="shopcart">
+                        <i class="iconfont icon-gouwuche" />
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul></van-tab>
+            <van-tab title="标签 3"><ul>
+                <li v-for="(item,index) in goodlists" :key="index">
+                  <div class="imgbox">
+                    <img :src="item.small_image" />
+                  </div>
+                  <div class="contentbox">
+                    <div class="name">{{item.product_name}}</div>
+                    <div class="desc">{{item.spec}}</div>
+                    <div class="price">
+                      <span class="now_price">{{item.price | priceFormat}}</span>
+                      <span class="old_price">{{item.origin_price | priceFormat}}</span>
+                      <span class="shopcart">
+                        <i class="iconfont icon-gouwuche" />
+                      </span>
+                    </div>
+                  </div>
+                </li>
+              </ul></van-tab>
           </van-tabs>
         </div>
       </div>
@@ -169,8 +203,8 @@
 </template>
 
 <script>
-import { Dialog, Toast } from "vant";
-import { getListdetails } from "../../../axios/api";
+import {  Toast } from "vant";
+import { getAll_lists } from "../../../axios/api";
 export default {
   data() {
     return {
@@ -185,28 +219,16 @@ export default {
       this.$router.go(-1);
     },
     async getRecommend() {
-      var type = "cate00";
       const t1 = Toast.loading({
         message: "加载中...",
         forbidClick: true
       });
-      const res2 = await getListdetails(type);
+      const res2 = await getAll_lists();
       if (res2.message == "success") {
         t1.clear();
-        this.goodlists = res2.data.goodlist.list;
+        this.goodlists = res2.data;
       }
     },
-    logout() {
-      Dialog.confirm({
-        message: "确认退出登录吗"
-      })
-        .then(() => {
-          this.$router.push("/login");
-        })
-        .catch(() => {
-          // on cancel
-        });
-    }
   },
   filters: {
     priceFormat(value) {

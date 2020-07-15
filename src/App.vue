@@ -68,8 +68,14 @@ body {
   /* overflow-y: scroll; */
   /* overflow: hidden; */
   /* overflow-x: hidden; */
+  width: 100vw;
+  height: 100vh;
 }
 body::-webkit-scrollbar {
   display: none;
+}
+#app {
+  width: 100%;
+  height: 100%;
 }
 </style>

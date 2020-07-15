@@ -45,7 +45,7 @@
           <img src="https://img.ddimg.mobi/3f280ff77ab3d1571213379189.jpg?width=750&height=1869" />
         </div>
         <van-goods-action>
-          <van-goods-action-icon icon="cart-o" text="购物车" :badge="getAllnum" />
+          <van-goods-action-icon icon="cart-o" text="购物车" :badge="getAllnum" @click="goShopcart()"/>
           <van-goods-action-button type="warning" text="加入购物车" @click="addCart(goodDetails)" />
           <van-goods-action-button type="danger" text="立即购买" />
         </van-goods-action>
@@ -64,7 +64,7 @@ export default {
   },
   computed:{
     getAllnum(){
-      return this.$store.getters.getSelectAllNum;
+      return this.$store.getters.getCartAllNum;
     }
   },
   created() {},
@@ -74,6 +74,9 @@ export default {
     },
     addCart(info) {
       this.$store.dispatch("addCart", info);
+    },
+    goShopcart(){
+      this.$router.push({name:'shopcart'})
     }
   },
   filters: {

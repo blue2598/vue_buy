@@ -13,14 +13,15 @@
             v-for="(item,index) in cateLists"
             :key="index"
             :class="item.id==listid?actived:''"
-            @click="showAll(item.id)"
+            @click="showAll(item.id,index)"
+            ref="menulist"
           >
             <span>{{item.name}}</span>
           </li>
         </ul>
       </div>
       <div class="right-wrapper">
-        <Listitem></Listitem>
+        <Listitem :listid="listid"></Listitem>
         <router-view></router-view>
       </div>
     </div>
@@ -28,35 +29,53 @@
 </template>
 
 <script>
+import BScroll from "better-scroll";
 import { getCatelists } from "../../axios/api";
-import Listitem from './categoryCom/Listitem'
+import Listitem from "./categoryCom/Listitem";
 export default {
   data() {
     return {
       active: "",
       actived: "actived",
       cateLists: [],
-      listid: "recommend"
+      listid: this.$route.params.id ? this.$route.params.id : "recommend",
+      scroll: null
     };
   },
-  mouted() {
-  },
-  components:{
+  components: {
     Listitem
   },
-  created() {
+  mounted() {
     this.getCate();
-    if (this.$route.params.id) this.listid = this.$route.params.id;
   },
   methods: {
     async getCate() {
       const response = await getCatelists();
       if (response.message == "success") {
         this.cateLists = response.data.cate;
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(".left-wrapper", {
+              probeType: 3,
+              click: true,
+              scrollY: true,
+              tap: true,
+              mouseWheel: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
+        });
       }
     },
-    showAll(id) {
+    showAll(id, index) {
       this.listid = id;
+      setTimeout(() => {
+        let menulist = this.$refs.menulist;
+        let el = menulist[index];
+        // 2.3 滚动到对应元素上
+        this.scroll.scrollToElement(el, 300);
+      }, 900);
     }
   }
 };
@@ -66,6 +85,9 @@ export default {
 #category {
   width: 100vw;
   height: 100vh;
+}
+#category::-webkit-scrollbar{
+  display: none;
 }
 .search {
   background-color: #fff;
@@ -105,17 +127,16 @@ export default {
   height: 100%;
   float: left;
   background-color: #f5f5f5;
-}
-.left-wrapper ul {
-  height: 100%;
   overflow: hidden;
   overflow-y: scroll;
+}
+.left-wrapper ul {
 }
 .left-wrapper ul::-webkit-scrollbar {
   display: none;
 }
 .left-wrapper ul li {
-  font-size: 0.18rem;
+  font-size: 0.16rem;
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
