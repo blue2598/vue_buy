@@ -81,6 +81,7 @@ export default {
       this.goodlists = [];
       this.nowtitle = '';
       this.showIndex = 0;
+      this.activedid = 0;
       const t1 = Toast.loading({
         message: "加载中...",
         forbidClick: true
@@ -186,7 +187,7 @@ export default {
   width: 26%;
   height: 100%;
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
 }
 .goodsitem .imgbox img {
   width: 100%;
@@ -194,6 +195,7 @@ export default {
 .goodsitem .contentbox {
   width: 74%;
   display: inline-block;
+  vertical-align: middle;
 }
 .goodsitem .contentbox .name {
   font-size: 0.16rem;

@@ -146,4 +146,7 @@ export default {
   right: 0;
   margin: auto;
 }
+/deep/ .van-radio__icon{
+  display: none;
+}
 </style>
